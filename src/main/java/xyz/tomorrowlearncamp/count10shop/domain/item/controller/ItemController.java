@@ -1,5 +1,6 @@
 package xyz.tomorrowlearncamp.count10shop.domain.item.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ public class ItemController {
 
     @GetMapping
     public ResponseEntity<Page<ItemListResponseDto>> findAll(
+        // todo: page 객체로 입력받기
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "10") int size,
         @RequestParam(required = false) String category
@@ -28,36 +30,36 @@ public class ItemController {
         return ResponseEntity.ok(itemService.findAll(page, size, category));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{itemId}")
     public ResponseEntity<ItemResponseDto> findById(
-        @PathVariable Long id
+        @PathVariable Long itemId
     ) {
-        return ResponseEntity.ok(itemService.findById(id));
+        return ResponseEntity.ok(itemService.findById(itemId));
     }
 
     @PostMapping
     public ResponseEntity<Void> saveItem(
-        @RequestBody CreateItemRequestDto dto
+        @Valid @RequestBody CreateItemRequestDto dto
     ) {
         itemService.saveItem(dto.getItemName(), dto.getCategory(), dto.getDescription(), dto.getPrice(), dto.getQuantity(), dto.getStatus());
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/info/{id}")
+    @PatchMapping("/info/{itemId}")
     public ResponseEntity<Void> updateItemInfo(
-        @PathVariable Long id,
-        @RequestBody UpdateItemInfoRequestDto dto
+        @PathVariable Long itemId,
+        @Valid @RequestBody UpdateItemInfoRequestDto dto
     ) {
-        itemService.updateItemInfo(id, dto.getItemName(), dto.getCategory(), dto.getDescription(), dto.getPrice(), dto.getQuantity());
+        itemService.updateItemInfo(itemId, dto.getItemName(), dto.getCategory(), dto.getDescription(), dto.getPrice(), dto.getQuantity());
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/status/{id}")
+    @PatchMapping("/status/{itemId}")
     public ResponseEntity<Void> updateItemStatus(
-        @PathVariable Long id,
-        @RequestBody UpdateItemStatusRequestDto dto
+        @PathVariable Long itemId,
+        @Valid @RequestBody UpdateItemStatusRequestDto dto
     ) {
-        itemService.updateItemStatus(id, dto.getStatus());
+        itemService.updateItemStatus(itemId, dto.getStatus());
         return ResponseEntity.ok().build();
     }
 
