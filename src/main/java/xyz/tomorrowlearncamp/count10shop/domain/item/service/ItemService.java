@@ -1,7 +1,6 @@
 package xyz.tomorrowlearncamp.count10shop.domain.item.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,13 +17,12 @@ import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;
 public class ItemService {
 	private final ItemRepository itemRepository;
 
-	public List<ItemListResponseDto> findAll(int page, int size, String category) {
-		Pageable pageable = PageRequest.of(page, size);
+	public Page<ItemListResponseDto> findAll(int page, int size, String category) {
+		Pageable pageable = PageRequest.of(page - 1, size);
+		Category cat = category != null ? Category.valueOf(category.toUpperCase()) : null;
 
-		return itemRepository.findAllByCategory(Category.valueOf(category), pageable)
-			.stream()
-			.map((i) -> new ItemListResponseDto(i.getId(), i.getItemName(), i.getCategory(), i.getPrice()))
-			.toList();
+		return itemRepository.findByCategory(cat, pageable)
+			.map((i) -> new ItemListResponseDto(i.getId(), i.getItemName(), i.getCategory(), i.getPrice()));
 	}
 
 	public ItemResponseDto findById(Long id) {

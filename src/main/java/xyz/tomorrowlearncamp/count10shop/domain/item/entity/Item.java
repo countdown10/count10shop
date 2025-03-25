@@ -2,6 +2,8 @@ package xyz.tomorrowlearncamp.count10shop.domain.item.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,6 +25,7 @@ public class Item {
 	private String itemName;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Category category;
 
 	@Column
@@ -35,6 +38,7 @@ public class Item {
 	private Long quantity;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Status status;
 
 	@Builder
