@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Category;
 import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Status;
 
 @Getter
@@ -26,27 +27,36 @@ public class ItemDocument {
 
 	private Long price;
 
+	@Enumerated(EnumType.STRING)
+	private Category category;
+
 	private String description;
 
 	@Enumerated(EnumType.STRING)
 	private Status status;
 
+	private Long quantity;
+
 	@Builder
-	public ItemDocument(Long id, String itemName, Long price, String description, Status status) {
+	public ItemDocument(Long id, String itemName, Long price, Category category, String description, Status status, Long quantity) {
 		this.id = id;
 		this.itemName = itemName;
 		this.price = price;
+		this.category = category;
 		this.description = description;
 		this.status = status;
+		this.quantity = quantity;
 	}
 
 	public static ItemDocument from(Item item) {
 		return ItemDocument.builder()
 			.id(item.getId())
 			.itemName(item.getItemName())
+			.category(item.getCategory())
 			.price(item.getPrice())
 			.description(item.getDescription())
 			.status(item.getStatus())
+			.quantity(item.getQuantity())
 			.build();
 	}
 }

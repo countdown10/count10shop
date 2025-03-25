@@ -9,5 +9,6 @@ import xyz.tomorrowlearncamp.count10shop.domain.item.entity.ItemDocument;
 
 @Repository
 public interface ItemElasticRepository extends ElasticsearchRepository<ItemDocument, Long> {
-	List<ItemDocument> findByItemName(String name);
+
+	List<ItemDocument> findByItemNameContainingIgnoreCase(String name);
 }

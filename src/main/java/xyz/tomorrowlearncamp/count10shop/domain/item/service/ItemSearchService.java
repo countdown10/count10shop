@@ -2,6 +2,7 @@ package xyz.tomorrowlearncamp.count10shop.domain.item.service;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,6 @@ public class ItemSearchService {
 	private final ItemElasticRepository itemElasticRepository;
 
 	public List<ItemDocument> searchByKeyword(String keyword) {
-		return itemElasticRepository.findByItemName(keyword);
+		return itemElasticRepository.findByItemNameContainingIgnoreCase(keyword);
 	}
 }
