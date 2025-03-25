@@ -30,8 +30,7 @@ public class ItemService {
 	public ItemResponseDto findById(Long id) {
 		Item savedItem = itemRepository.findByIdOrElseThrow(id);
 
-		return new ItemResponseDto(savedItem.getId(), savedItem.getItemName(), savedItem.getDescription(),
-			savedItem.getPrice(), savedItem.getQuantity(), savedItem.getStatus());
+		return ItemResponseDto.of(savedItem);
 	}
 
 	@Transactional
