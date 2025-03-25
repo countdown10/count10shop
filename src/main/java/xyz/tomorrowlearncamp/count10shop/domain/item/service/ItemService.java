@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemListResponseDto;
@@ -14,6 +15,7 @@ import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ItemService {
 	private final ItemRepository itemRepository;
 
@@ -22,7 +24,7 @@ public class ItemService {
 		Category cat = category != null ? Category.valueOf(category.toUpperCase()) : null;
 
 		return itemRepository.findByCategory(cat, pageable)
-			.map((i) -> new ItemListResponseDto(i.getId(), i.getItemName(), i.getCategory(), i.getPrice()));
+			.map(ItemListResponseDto::of);
 	}
 
 	public ItemResponseDto findById(Long id) {
@@ -32,6 +34,7 @@ public class ItemService {
 			savedItem.getPrice(), savedItem.getQuantity(), savedItem.getStatus());
 	}
 
+	@Transactional
 	public void saveItem(String itemName, String category, String description, Long price, Long quantity, String status) {
 		Item item = Item.builder()
 			.itemName(itemName)
@@ -45,19 +48,17 @@ public class ItemService {
 		itemRepository.save(item);
 	}
 
+	@Transactional
 	public void updateItemInfo(Long id, String itemName, String category, String description, Long price, Long quantity) {
 		Item savedItem = itemRepository.findByIdOrElseThrow(id);
 
 		savedItem.updateInfo(itemName, category, description, price, quantity);
-
-		itemRepository.save(savedItem);
 	}
 
+	@Transactional
 	public void updateItemStatus(Long id, String status) {
 		Item savedItem = itemRepository.findByIdOrElseThrow(id);
 
 		savedItem.updateStatus(status);
-
-		itemRepository.save(savedItem);
 	}
 }
