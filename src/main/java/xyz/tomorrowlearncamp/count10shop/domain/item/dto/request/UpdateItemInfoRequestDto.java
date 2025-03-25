@@ -16,6 +16,7 @@ public class UpdateItemInfoRequestDto {
 	@NotBlank
 	private final String category;
 
+	@Min(1)
 	@Max(value = Long.MAX_VALUE)
 	private final Long price;
 

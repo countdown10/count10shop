@@ -16,6 +16,7 @@ public class CreateItemRequestDto {
     @NotBlank
     private final String category;
 
+    @Min(1)
     @Max(Long.MAX_VALUE)
     private final Long price;
 

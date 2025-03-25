@@ -15,7 +15,6 @@ import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class ItemService {
 	private final ItemRepository itemRepository;
 
