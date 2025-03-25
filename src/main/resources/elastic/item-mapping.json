@@ -1,0 +1,29 @@
+{
+  "properties": {
+    "id": {
+      "type": "long"
+    },
+    "itemName": {
+      "type": "text",
+      "analyzer": "korean"
+    },
+    "category": {
+      "type": "text",
+      "analyzer": "korean"
+    },
+    "description": {
+      "type": "text",
+      "analyzer": "korean"
+    },
+    "price": {
+      "type": "long"
+    },
+    "quantity": {
+      "type": "long"
+    },
+    "status": {
+      "type" : "text",
+      "analyzer" : "korean"
+    }
+  }
+}

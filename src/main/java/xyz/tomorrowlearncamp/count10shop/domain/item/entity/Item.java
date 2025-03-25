@@ -1,5 +1,6 @@
 package xyz.tomorrowlearncamp.count10shop.domain.item.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -9,31 +10,55 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import xyz.tomorrowlearncamp.count10shop.domain.common.entity.BaseEntity;
-import xyz.tomorrowlearncamp.count10shop.domain.item.enums.ItemStatus;
+import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Category;
+import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Status;
 
-@Entity
 @Getter
+@Entity
 @NoArgsConstructor
-public class Item extends BaseEntity {
+public class Item {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private String itemName;
 
-	private Long price;
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Category category;
 
 	private String description;
 
+	@Column(nullable = false)
+	private Long price;
+
+	@Column(nullable = false)
+	private Long quantity;
+
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private ItemStatus status;
+	private Status status;
 
 	@Builder
-	public Item(String itemName, Long price, String description, ItemStatus status) {
+	public Item(String itemName, String category, String description, Long price, Long quantity, String status) {
 		this.itemName = itemName;
-		this.price = price;
+		this.category = Category.valueOf(category.toUpperCase());
 		this.description = description;
-		this.status = status;
+		this.price = price;
+		this.quantity = quantity;
+		this.status = Status.valueOf(status.toUpperCase());
+	}
+
+	public void updateInfo(String itemName, String category, String description, Long price, Long quantity) {
+		this.itemName = itemName;
+		this.category = Category.valueOf(category.toUpperCase());
+		this.description = description;
+		this.price = price;
+		this.quantity = quantity;
+	}
+
+	public void updateStatus(String status) {
+		this.status = Status.valueOf(status.toUpperCase());
 	}
 }

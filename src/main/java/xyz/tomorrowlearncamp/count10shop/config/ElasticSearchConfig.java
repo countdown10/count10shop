@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 
 @Configuration
-@EnableElasticsearchRepositories	//elastic 레포지토리 지원 활성화
+@EnableElasticsearchRepositories(basePackages = "xyz.tomorrowlearncamp.count10shop.domain.item.repository")//elastic 레포지토리 지원 활성화
 public class ElasticSearchConfig extends ElasticsearchConfiguration {
 	@Value("${spring.elasticsearch.uris}")
 	private String host;
