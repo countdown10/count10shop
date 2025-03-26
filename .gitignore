@@ -35,4 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
-.env
+
+### properties ###
+*.properties
+application.yml
+*.env
