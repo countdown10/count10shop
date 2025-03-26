@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jacoco'
     id 'org.springframework.boot' version '3.4.4'
     id 'io.spring.dependency-management' version '1.1.7'
 }
@@ -12,6 +13,11 @@ java {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
+
+jacoco {
+    toolVersion = "0.8.12"
+}
+
 
 configurations {
     compileOnly {
@@ -45,4 +51,29 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
+}
+
+tasks.named('check') {
+    dependsOn jacocoTestCoverageVerification // check 태스크 실행 시 커버리지 검증 포함
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+}
+
+jacocoTestCoverageVerification {
+    dependsOn jacocoTestReport
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.2 // 전체 테스트 커버리지 40% 이상 요구
+            }
+        }
+    }
 }
