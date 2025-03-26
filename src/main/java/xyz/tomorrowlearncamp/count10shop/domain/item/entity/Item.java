@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import xyz.tomorrowlearncamp.count10shop.domain.common.exception.InvalidRequestException;
 import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Category;
 import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Status;
 
@@ -59,7 +60,19 @@ public class Item {
 		this.quantity = quantity;
 	}
 
-	public void updateStatus(String status) {
-		this.status = Status.valueOf(status.toUpperCase());
+	public void updateStatus(Status status) {
+		this.status = status;
+	}
+
+	public void decrementQuantity() {
+		if (this.quantity <= 0) {
+			throw new InvalidRequestException("재고가 없습니다.");
+		}
+
+		this.quantity--;
+
+		if (this.quantity == 0) {
+			updateStatus(Status.SOLD_OUT);
+		}
 	}
 }

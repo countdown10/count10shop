@@ -11,6 +11,7 @@ import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemListRespon
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemResponseDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.Item;
 import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Category;
+import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Status;
 import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;
 
 @Service
@@ -30,6 +31,10 @@ public class ItemService {
 		Item savedItem = itemRepository.findByIdOrElseThrow(id);
 
 		return ItemResponseDto.of(savedItem);
+	}
+
+	public Item findItemByIdOrElseThrow(Long id) {
+		return itemRepository.findByIdOrElseThrow(id);
 	}
 
 	@Transactional
@@ -57,6 +62,6 @@ public class ItemService {
 	public void updateItemStatus(Long id, String status) {
 		Item savedItem = itemRepository.findByIdOrElseThrow(id);
 
-		savedItem.updateStatus(status);
+		savedItem.updateStatus(Status.valueOf(status));
 	}
 }
