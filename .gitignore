@@ -41,3 +41,7 @@ out/
 
 application.yml
 .env
+
+### log ###
+
+logs/
