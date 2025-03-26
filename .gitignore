@@ -45,3 +45,5 @@ application.yml
 ### log ###
 
 logs/
+
+/src/main/resources/logback-spring.xml
