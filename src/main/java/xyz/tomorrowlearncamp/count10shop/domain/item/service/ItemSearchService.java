@@ -54,6 +54,6 @@ public class ItemSearchService {
 			.map(ItemDocumentResponseDto::of)
 			.toList();
 
-		return new ItemDocumentPageResponseDto(items,currentPage, totalPages, totalElements);
+		return new ItemDocumentPageResponseDto(items, currentPage, totalPages, totalElements);
 	}
 }

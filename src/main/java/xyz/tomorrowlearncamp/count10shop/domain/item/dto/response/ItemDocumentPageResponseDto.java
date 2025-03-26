@@ -11,5 +11,5 @@ public class ItemDocumentPageResponseDto{
 	List<ItemDocumentResponseDto> items;
 	int currentPageNum;
 	int totalPages;
-	long totalPage;
+	long totalElements;
 }
