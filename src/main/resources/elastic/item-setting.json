@@ -1,8 +1,19 @@
 {
-  "analysis" : {
-    "analyzer" : {
-      "korean" : {
-        "type" : "nori"
+  "analysis": {
+    "filter": {
+      "nori_readingform": {
+        "type": "nori_readingform"
+      },
+      "nori_part_of_speech": {
+        "type": "nori_part_of_speech",
+        "stoptags": ["E", "IC", "J", "MAG", "MM", "SP", "SSC", "SSO", "SC"]
+      }
+    },
+    "analyzer": {
+      "korean": {
+        "type": "custom",
+        "tokenizer": "nori_tokenizer",
+        "filter": ["nori_part_of_speech", "nori_readingform"]
       }
     }
   }

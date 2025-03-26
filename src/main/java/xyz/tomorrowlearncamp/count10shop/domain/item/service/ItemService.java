@@ -55,6 +55,7 @@ public class ItemService {
 		Item savedItem = itemRepository.findByIdOrElseThrow(id);
 
 		savedItem.updateInfo(itemName, category, description, price, quantity);
+		itemElasticRepository.save(ItemDocument.from(savedItem));
 	}
 
 	@Transactional
@@ -62,5 +63,6 @@ public class ItemService {
 		Item savedItem = itemRepository.findByIdOrElseThrow(id);
 
 		savedItem.updateStatus(status);
+		itemElasticRepository.save(ItemDocument.from(savedItem));
 	}
 }
