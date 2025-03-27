@@ -320,6 +320,45 @@ class CouponServiceTest {
     }
 
     @Test
-    void getCoupon() {
+    @DisplayName("쿠폰_단일_조회_성공")
+    void getCoupon_success() {
+        //given
+        CreateCouponRequest request = CreateCouponRequest.builder()
+                .name("쿠폰")
+                .content("단일 조회 테스트")
+                .minOrderPrice(10000)
+                .discountAmount(2000)
+                .totalQuantity(10)
+                .expiredAt(LocalDateTime.now().plusDays(3))
+                .build();
+
+        Long couponId = couponService.createCoupon(request);
+
+        // when
+        CouponResponse response = couponService.getCoupon(couponId);
+
+        // then
+        Assertions.assertThat(response.getId()).isEqualTo(couponId);
+        Assertions.assertThat(response.getName()).isEqualTo("쿠폰");
+        Assertions.assertThat(response.getContent()).isEqualTo("단일 조회 테스트");
+        Assertions.assertThat(response.getDiscountAmount()).isEqualTo(2000);
+        Assertions.assertThat(response.getTotalQuantity()).isEqualTo(10);
+        Assertions.assertThat(response.getMinOrderPrice()).isEqualTo(10000);
     }
+
+    @Test
+    @DisplayName("쿠폰_단일_조회_실패")
+    void getCoupon_fail() {
+        //given
+        Long noneId = 1L;
+
+        // when
+        Throwable throwable = Assertions.catchThrowable(() -> couponService.getCoupon(noneId));
+
+        // then
+        Assertions.assertThat(throwable)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("존재하지 않는 쿠폰.");
+    }
+
 }
