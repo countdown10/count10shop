@@ -3,7 +3,8 @@ name: Deploy to AWS ECR
 on:
   workflow_dispatch:
   pull_request:
-    branches: [ feat/workflow ]
+    branches:
+      - feat/*
 
 env:
   AWS_REGION: ap-southeast-2  # AWS 리전 (서울 리전)
