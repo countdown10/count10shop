@@ -58,9 +58,9 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: |
-            echo ">>>>>>>> $ECR_REGISTRY"  >> $GITHUB_OUTPUT
-            echo ">>>>>>>> $ECR_REPOSITORY"  >> $GITHUB_OUTPUT
-            echo ">>>>>>>> $IMAGE_TAG"  >> $GITHUB_OUTPUT
+            echo "ECR_REGISTRY: $ECR_REGISTRY"
+            echo "ECR_REPOSITORY: $ECR_REPOSITORY"
+            echo "IMAGE_TAG: $IMAGE_TAG"
             
             docker stop ${{ env.DOCKER_CONTAINER }} || true
             docker rm ${{ env.DOCKER_CONTAINER }} || true
