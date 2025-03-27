@@ -13,7 +13,7 @@ import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.CouponStatus;
 import java.time.LocalDateTime;
 
 @DataJpaTest
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CouponRepositoryTest {
     @Autowired
