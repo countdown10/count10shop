@@ -19,6 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemListResponseDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.Item;
 import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Category;
+import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Status;
 import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,8 +34,8 @@ class ItemServiceTest {
 	@Test
 	void 카테고리_없이_조회시_전체_조회() {
 		// given
-		Item item1 = new Item("옷", "CLOTHES", "", 10000L, 20L, "SALE");
-		Item item2 = new Item("화장품", "BEAUTY", "", 5000L, 30L, "SALE");
+		Item item1 = new Item("옷", Category.CLOTHES, "", 10000L, 20L, Status.SALE);
+		Item item2 = new Item("화장품", Category.BEAUTY, "", 5000L, 30L, Status.SALE);
 		ReflectionTestUtils.setField(item1, "id", 1L);
 		ReflectionTestUtils.setField(item2, "id", 2L);
 
@@ -63,8 +64,8 @@ class ItemServiceTest {
 	@Test
 	void 카테고리_조회시_일부_조회() {
 		// given
-		Item item1 = new Item("옷", "CLOTHES", "", 10000L, 20L, "SALE");
-		Item item2 = new Item("화장품", "BEAUTY", "", 5000L, 30L, "SALE");
+		Item item1 = new Item("옷", Category.CLOTHES, "", 10000L, 20L, Status.SALE);
+		Item item2 = new Item("화장품", Category.BEAUTY, "", 5000L, 30L, Status.SALE);
 		ReflectionTestUtils.setField(item1, "id", 1L);
 		ReflectionTestUtils.setField(item2, "id", 2L);
 
