@@ -3,7 +3,7 @@ name: Build and Push Docker Image to AWS ECR
 on:
   push:
     branches:
-      - main  # 또는 원하는 브랜치 이름
+      - feat/*  # 또는 원하는 브랜치 이름
 
 env:
   AWS_REGION: ap-southeast-2  # AWS 리전 (서울 리전)
