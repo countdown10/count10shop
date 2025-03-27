@@ -26,7 +26,7 @@ public class CouponResponse {
     private LocalDateTime expiredAt;
 
 
-    public static CouponResponse from(Coupon coupon) {
+    public static CouponResponse of(Coupon coupon) {
         CouponResponse couponResponse = new CouponResponse();
         couponResponse.id = coupon.getId();
         couponResponse.name = coupon.getName();

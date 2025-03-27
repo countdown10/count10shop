@@ -2,7 +2,6 @@ package xyz.tomorrowlearncamp.count10shop.domain.coupon.dto.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.Coupon;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.IssuedCoupon;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.IssuedCouponStatus;
 
@@ -29,7 +28,7 @@ public class IssuedCouponResponse {
     private LocalDateTime usedAt;
     private LocalDateTime expiredAt;
 
-    public static IssuedCouponResponse from(IssuedCoupon issuedCoupon) {
+    public static IssuedCouponResponse of(IssuedCoupon issuedCoupon) {
         IssuedCouponResponse response = new IssuedCouponResponse();
         response.issuedCouponId = issuedCoupon.getId();
         response.couponId = issuedCoupon.getCoupon().getId();

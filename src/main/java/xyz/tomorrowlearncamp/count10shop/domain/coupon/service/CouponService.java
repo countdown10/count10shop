@@ -70,7 +70,7 @@ public class CouponService {
     public List<CouponResponse> getCoupons() {
         return couponRepository.findAll()
                 .stream()
-                .map(CouponResponse::from)
+                .map(CouponResponse::of)
                 .collect(Collectors.toList());
     }
 
@@ -78,7 +78,7 @@ public class CouponService {
     public List<IssuedCouponResponse> getUserCoupons(Long userId) {
         return issuedCouponRepository.findAllByUserId(userId)
                 .stream()
-                .map(IssuedCouponResponse::from)
+                .map(IssuedCouponResponse::of)
                 .collect(Collectors.toList());
     }
 
@@ -104,6 +104,6 @@ public class CouponService {
         Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(
                         () -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
-        return CouponResponse.from(coupon);
+        return CouponResponse.of(coupon);
     }
 }

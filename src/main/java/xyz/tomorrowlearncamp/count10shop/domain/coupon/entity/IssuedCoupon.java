@@ -11,9 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Builder
 @Table(name = "issued_coupon")
 public class IssuedCoupon extends BaseEntity {
     @Id
@@ -40,5 +38,14 @@ public class IssuedCoupon extends BaseEntity {
     public void use() {
         this.status = IssuedCouponStatus.USED;
         this.usedAt = LocalDateTime.now();
+    }
+
+    @Builder
+    public IssuedCoupon(Long userId, Coupon coupon, IssuedCouponStatus status, LocalDateTime issuedAt, LocalDateTime usedAt) {
+        this.userId = userId;
+        this.coupon = coupon;
+        this.status = status;
+        this.issuedAt = issuedAt;
+        this.usedAt = usedAt;
     }
 }

@@ -126,19 +126,6 @@ class CouponServiceTest {
     }
 
 
-    private Coupon createCoupon() {
-        Coupon coupon = Coupon.builder()
-                .name("테스트")
-                .content("테스트")
-                .discountAmount(3000)
-                .minOrderPrice(20000)
-                .totalQuantity(10)
-                .issuedQuantity(0)
-                .couponStatus(CouponStatus.AVAILABLE)
-                .expiredAt(LocalDateTime.now().plusDays(7))
-                .build();
-        return couponRepository.save(coupon);
-    }
 
     @Test
     @DisplayName("쿠폰_발급_실패-이미_발급된_쿠폰")
@@ -356,18 +343,6 @@ class CouponServiceTest {
 
     @Test
     @DisplayName("쿠폰_사용_실패-타인꺼")
-    /*
-    쿠폰을 사용 하려는 유저의 id와 다르면, 니 쿠폰 아니라고 막으려는거 테스트.
-    // 가정) 쿠폰을 발급 받지 않았는데, 그 쿠폰을 사용하려는 유저.
-    // 즉, 이걸 시스템적으로 잘 차단하고 있는지를 검증해야하는거.
-    쿠폰 발급 시점에는 userId로 IssuedCoupon을 만들기 때문에
-    다른 사람 이름으로 발급이 안되지만, url만 알면, patch로 요청을 보낸다는 가정을 한다면?
-    만약 시스템이 검증을 안하게되면 내 쿠폰을 도둑놈 쉐키가 쓰게 되는거.
-    따라서, 이 테스트는 그걸 막고 있는지 확인하는거.
-    컨트롤러 레벨에서 userId 검증 (Security + AOP 권한 검증)
-    ->토큰에 담긴 유저 정보(@AuthenticationPrincipal)를 통해
-    해당 userId로 접근 가능한지 AOP로 걸러주면 될듯.
-     */
     void useCoupon_fail_2() {
         //given
         Coupon coupon = createCoupon();
@@ -460,4 +435,18 @@ class CouponServiceTest {
                 .hasMessage("존재하지 않는 쿠폰.");
     }
 
+
+    private Coupon createCoupon() {
+        Coupon coupon = Coupon.builder()
+                .name("테스트")
+                .content("테스트")
+                .discountAmount(3000)
+                .minOrderPrice(20000)
+                .totalQuantity(10)
+                .issuedQuantity(0)
+                .couponStatus(CouponStatus.AVAILABLE)
+                .expiredAt(LocalDateTime.now().plusDays(7))
+                .build();
+        return couponRepository.save(coupon);
+    }
 }

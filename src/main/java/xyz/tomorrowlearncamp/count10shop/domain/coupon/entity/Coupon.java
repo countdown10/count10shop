@@ -11,10 +11,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "coupon")
-@Builder
 public class Coupon extends BaseEntity {
 
     @Id
@@ -46,6 +44,19 @@ public class Coupon extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime expiredAt;
 
+    @Builder
+    private Coupon(String name, String content, Integer minOrderPrice, Integer discountAmount,
+                   Integer totalQuantity, Integer issuedQuantity, CouponStatus couponStatus,
+                   LocalDateTime expiredAt) {
+        this.name = name;
+        this.content = content;
+        this.minOrderPrice = minOrderPrice;
+        this.discountAmount = discountAmount;
+        this.totalQuantity = totalQuantity;
+        this.issuedQuantity = issuedQuantity;
+        this.couponStatus = couponStatus;
+        this.expiredAt = expiredAt;
+    }
 
     public void addIssuedQuantity() {
         this.issuedQuantity += 1;
