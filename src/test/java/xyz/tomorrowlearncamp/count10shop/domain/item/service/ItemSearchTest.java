@@ -21,10 +21,10 @@ import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemElasticRepos
 @ExtendWith(MockitoExtension.class)
 public class ItemSearchTest {
 	@Mock
-	ItemElasticRepository itemElasticRepository;
+	private ItemElasticRepository itemElasticRepository;
 
 	@InjectMocks
-	ItemSearchService itemSearchService;
+	private ItemSearchService itemSearchService;
 
 	@Test
 	@DisplayName("상품이름이 영어 혹은 한국어일 때 검색 테스트")
