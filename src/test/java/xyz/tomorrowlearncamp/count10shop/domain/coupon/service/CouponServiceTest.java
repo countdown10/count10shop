@@ -315,8 +315,107 @@ class CouponServiceTest {
     }
 
     @Test
-    void useCoupon() {
+    @DisplayName("쿠폰_사용_성공")
+    void useCoupon_success() {
+        //given
+        Coupon coupon = createCoupon();
+        Long userId = 1L;
+        IssuedCoupon issuedCoupon = issuedCouponRepository.save(
+                IssuedCoupon.builder()
+                        .userId(userId)
+                        .coupon(coupon)
+                        .status(IssuedCouponStatus.UNUSED)
+                        .issuedAt(LocalDateTime.now())
+                        .build()
+        );
 
+        // when
+        couponService.useCoupon(issuedCoupon.getId(), userId);
+
+        // then
+        IssuedCoupon updated = issuedCouponRepository.findById(issuedCoupon.getId()).get();
+        Assertions.assertThat(updated.getStatus()).isEqualTo(IssuedCouponStatus.USED);
+        Assertions.assertThat(updated.getUsedAt()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("쿠폰_사용_실패-없는_쿠폰")
+    void useCoupon_fail_1() {
+        //given
+        Long noneId = 9L;
+        Long userId = 1L;
+
+        // when
+        Throwable throwable = catchThrowable(() -> couponService.useCoupon(noneId, userId));
+
+        // then
+        Assertions.assertThat(throwable)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("발급된 쿠폰이 존재하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("쿠폰_사용_실패-타인꺼")
+    /*
+    쿠폰을 사용 하려는 유저의 id와 다르면, 니 쿠폰 아니라고 막으려는거 테스트.
+    // 가정) 쿠폰을 발급 받지 않았는데, 그 쿠폰을 사용하려는 유저.
+    // 즉, 이걸 시스템적으로 잘 차단하고 있는지를 검증해야하는거.
+    쿠폰 발급 시점에는 userId로 IssuedCoupon을 만들기 때문에
+    다른 사람 이름으로 발급이 안되지만, url만 알면, patch로 요청을 보낸다는 가정을 한다면?
+    만약 시스템이 검증을 안하게되면 내 쿠폰을 도둑놈 쉐키가 쓰게 되는거.
+    따라서, 이 테스트는 그걸 막고 있는지 확인하는거.
+    컨트롤러 레벨에서 userId 검증 (Security + AOP 권한 검증)
+    ->토큰에 담긴 유저 정보(@AuthenticationPrincipal)를 통해
+    해당 userId로 접근 가능한지 AOP로 걸러주면 될듯.
+     */
+    void useCoupon_fail_2() {
+        //given
+        Coupon coupon = createCoupon();
+        Long ownerId = 1L;
+        Long mysteriousId = 2L;
+
+        IssuedCoupon issuedCoupon = issuedCouponRepository.save(
+                IssuedCoupon.builder()
+                        .userId(ownerId)
+                        .coupon(coupon)
+                        .status(IssuedCouponStatus.UNUSED)
+                        .issuedAt(LocalDateTime.now())
+                        .build()
+        );
+
+        // when
+        Throwable throwable = catchThrowable(() -> couponService.useCoupon(issuedCoupon.getId(), mysteriousId));
+
+        // then
+        Assertions.assertThat(throwable)
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("해당 쿠폰은 당신의 것이 아닙니다 ^-^. \n 정상적인 경로로 쿠폰 사용 및 발급 부탁드립니다.");
+    }
+
+    @Test
+    @DisplayName("쿠폰_사용_실패-이미_사용된_쿠폰")
+    void useCoupon_fail_3() {
+        //given
+        Coupon coupon = createCoupon();
+        Long userId = 1L;
+
+        IssuedCoupon issuedCoupon = issuedCouponRepository.save(
+                IssuedCoupon.builder()
+                        .userId(userId)
+                        .coupon(coupon)
+                        .status(IssuedCouponStatus.USED)
+                        .issuedAt(LocalDateTime.now())
+                        .usedAt(LocalDateTime.now())
+                        .build()
+        );
+
+        // when
+        Throwable throwable = catchThrowable(() -> couponService.useCoupon(issuedCoupon.getId(), userId));
+
+        // then
+        Assertions.assertThat(throwable)
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("이미 사용된 쿠폰입니다.");
     }
 
     @Test
