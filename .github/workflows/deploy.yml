@@ -55,7 +55,7 @@ jobs:
             docker stop ${{ env.DOCKER_CONTAINER }}
             docker rm ${{ env.DOCKER_CONTAINER }}
             docker rmi ${{ env.ECR_REPOSITORY }}
-            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
             docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker run -d -p 8080:8080 --name ${{ env.DOCKER_CONTAINER }} ${{ env.ECR_REPOSITORY }}
             
