@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.Coupon;
 
 import java.util.Optional;
 
+@Repository
 public interface CouponRepository extends JpaRepository<Coupon, Long> {
 
     // 3. 동시 요청해도 발급 수량 안정적으로 증가

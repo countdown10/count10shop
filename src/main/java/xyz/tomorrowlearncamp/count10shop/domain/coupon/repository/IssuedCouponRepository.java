@@ -1,11 +1,13 @@
 package xyz.tomorrowlearncamp.count10shop.domain.coupon.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.IssuedCoupon;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface IssuedCouponRepository extends JpaRepository<IssuedCoupon, Long> {
     // 1. 중복 발급 방지
     boolean existsByUserIdAndCouponId(Long userId, Long couponId);
