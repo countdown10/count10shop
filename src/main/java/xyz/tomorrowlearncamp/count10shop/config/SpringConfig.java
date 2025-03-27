@@ -9,7 +9,10 @@ import xyz.tomorrowlearncamp.count10shop.domain.item.service.ItemService;
 import xyz.tomorrowlearncamp.count10shop.domain.common.aop.LettuceLockService;
 import xyz.tomorrowlearncamp.count10shop.domain.payment.repository.PaymentRepository;
 import xyz.tomorrowlearncamp.count10shop.domain.payment.service.LettuceLockPaymentService;
+import xyz.tomorrowlearncamp.count10shop.domain.payment.service.NoLockPaymentService;
+import xyz.tomorrowlearncamp.count10shop.domain.payment.service.OptimisticLockPaymentService;
 import xyz.tomorrowlearncamp.count10shop.domain.payment.service.PaymentService;
+import xyz.tomorrowlearncamp.count10shop.domain.payment.service.PessimisticLockPaymentService;
 
 @Configuration
 @RequiredArgsConstructor
@@ -21,8 +24,8 @@ public class SpringConfig {
 
 	@Bean
 	public PaymentService paymentService() {
-		return new LettuceLockPaymentService(paymentRepository, itemService);
-		// return new PessimisticLockPaymentService(paymentRepository, itemRepository);
+		// return new LettuceLockPaymentService(paymentRepository, itemService);
+		return new PessimisticLockPaymentService(paymentRepository, itemRepository);
 		// return new OptimisticLockPaymentService(paymentRepository, itemService, itemRepository);
 		// return new NoLockPaymentService(paymentRepository, itemService);
 	}
