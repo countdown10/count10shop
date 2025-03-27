@@ -45,12 +45,24 @@ jobs:
       - name: Deploy
         id: build-deploy
         uses: appleboy/ssh-action@master
+        env:
+          DOCKER_CONTAINER: container
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_PORT }}
-          script: whoami
+          script: |
+            docker stop ${{ DOCKER_CONTAINER }}
+            docker rm ${{ DOCKER_CONTAINER }}
+            docker rmi ${{ ECR_REPOSITORY }}
+            docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+            docker run -d -p 8080:8080 --name ${{ DOCKER_CONTAINER }} ${{ ECR_REPOSITORY }}
+            
+            
+
 #        env:
 #          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
 #          IMAGE_TAG: ${{ github.sha }}
