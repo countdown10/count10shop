@@ -57,7 +57,6 @@ class CouponServiceTest {
                 .findById(savedId)
                 .orElseThrow(
                         () -> new IllegalArgumentException("저장된 쿠폰이 없습니다."));
-
         Assertions.assertThat(saved.getName()).isEqualTo("쿠폰");
         Assertions.assertThat(saved.getContent()).isEqualTo("테스트 쿠폰");
         Assertions.assertThat(saved.getDiscountAmount()).isEqualTo(3000);
@@ -65,7 +64,6 @@ class CouponServiceTest {
         Assertions.assertThat(saved.getIssuedQuantity()).isEqualTo(0);
         Assertions.assertThat(saved.getCouponStatus()).isEqualTo(CouponStatus.CREATED);
         Assertions.assertThat(saved.getExpiredAt()).isAfter(LocalDateTime.now());
-
     }
 
     @Test
@@ -147,7 +145,7 @@ class CouponServiceTest {
         //then
         Assertions.assertThat(throwable)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("이미 발급된 쿠폰");
+                .hasMessage("이미 발급된 쿠폰입니다.");
     }
 
     @Test
@@ -172,8 +170,8 @@ class CouponServiceTest {
     void issueCoupon_fail_3() {
         // given
         Coupon coupon = couponRepository.save(Coupon.builder()
-                .name("발급 끝!")
-                .content("이미 모두 발급해서 더이상 남은 수량이 없음")
+                .name("수량 초과")
+                .content("fail")
                 .minOrderPrice(10000)
                 .discountAmount(1000)
                 .totalQuantity(1)
@@ -197,11 +195,11 @@ class CouponServiceTest {
     void issueCoupon_fail_4() {
         // given
         Coupon coupon = couponRepository.save(Coupon.builder()
-                .name("비활성 쿠폰")
-                .content("상태 비활성")
+                .name("비활성")
+                .content("fail")
                 .minOrderPrice(10000)
                 .discountAmount(1000)
-                .totalQuantity(5)
+                .totalQuantity(10)
                 .issuedQuantity(0)
                 .couponStatus(CouponStatus.CREATED)
                 .expiredAt(LocalDateTime.now().plusDays(5))
@@ -214,7 +212,7 @@ class CouponServiceTest {
         // then
         Assertions.assertThat(throwable)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("'AVAILABLE' 가 아니라서 쿠폰 발급 불가능");
+                .hasMessage("'AVAILABLE' 가 아니라서 쿠폰 발급 불가능합니다.");
     }
 
     @Test
@@ -364,7 +362,7 @@ class CouponServiceTest {
         // then
         Assertions.assertThat(throwable)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("해당 쿠폰은 당신의 것이 아닙니다 ^-^. \n 정상적인 경로로 쿠폰 사용 및 발급 부탁드립니다.");
+                .hasMessage("해당 쿠폰은 고객님의 것이 아닙니다.");
     }
 
     @Test
@@ -432,7 +430,7 @@ class CouponServiceTest {
         // then
         Assertions.assertThat(throwable)
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 쿠폰.");
+                .hasMessage("존재하지 않는 쿠폰입니다.");
     }
 
 
