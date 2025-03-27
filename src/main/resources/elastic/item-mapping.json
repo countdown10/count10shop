@@ -12,13 +12,13 @@
         },
         "english" : {
           "type" : "text",
-          "analyzer" : "snowball"
+          "analyzer" : "custom_snowball"
         }
       }
     },
     "category": {
-      "type": "text",
-      "analyzer": "snowball"
+      "type": "keyword",
+      "normalizer" : "lowercase_normalizer"
     },
     "description": {
       "type": "text",
@@ -31,8 +31,8 @@
       "type": "long"
     },
     "status": {
-      "type" : "text",
-      "analyzer" : "snowball"
+      "type" : "keyword",
+      "normalizer" : "lowercase_normalizer"
     }
   }
 }

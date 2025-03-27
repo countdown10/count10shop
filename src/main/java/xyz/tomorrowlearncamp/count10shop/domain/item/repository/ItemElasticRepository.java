@@ -13,6 +13,8 @@ public interface ItemElasticRepository extends ElasticsearchRepository<ItemDocum
 	@Query("{\"match\": {\"itemName.korean\": \"?0\"}}")
 	List<ItemDocument> searchByKorean(String keyword);
 
-	@Query("{\"match\": {\"itemName.english\": \"?0\"}}")
-	List<ItemDocument> searchByEnglish(String keyword);
+	@Query("{\"bool\": {\"should\": [{\"match_phrase_prefix\": {\"itemName.english\": \"?0\"}}, {\"term\": {\"category\": \"?0\"}}]}}")
+	List<ItemDocument> searchByItemNameOrCategory(String keyword);
+
+	//?0은 메서드에 전달된 첫 번째 매개변수를 의미합니다. 지금 같은 경우는 keyword를 의미합니다.
 }

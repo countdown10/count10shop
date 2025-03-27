@@ -29,7 +29,7 @@ public class ItemSearchService {
 			return paging(itemList, pageable);
 		}
 
-		List<ItemDocument> itemDocuments = itemElasticRepository.searchByEnglish(keyword);
+		List<ItemDocument> itemDocuments = itemElasticRepository.searchByItemNameOrCategory(keyword);
 		return paging(itemDocuments, pageable);
 	}
 

@@ -1,7 +1,5 @@
 package xyz.tomorrowlearncamp.count10shop.domain.item.controller;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemDocumentPageResponseDto;
-import xyz.tomorrowlearncamp.count10shop.domain.item.entity.ItemDocument;
 import xyz.tomorrowlearncamp.count10shop.domain.item.service.ItemSearchService;
 
 @RestController
