@@ -42,6 +42,7 @@ jobs:
       - name: Deploy
         id: build-deploy
         uses: appleboy/ssh-action@master
+
         env:
           DOCKER_CONTAINER: container
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -52,10 +53,10 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: |
-            docker stop ${{ env.DOCKER_CONTAINER }}
-            docker rm ${{ env.DOCKER_CONTAINER }}
-            docker rmi ${{ env.ECR_REPOSITORY }}
-            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+            docker stop ${{ env.DOCKER_CONTAINER }} || true
+            docker rm ${{ env.DOCKER_CONTAINER }} || true
+            docker rmi ${{ env.ECR_REPOSITORY }} || true
+
             docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker run -d -p 8080:8080 --name ${{ env.DOCKER_CONTAINER }} ${{ env.ECR_REPOSITORY }}
             
