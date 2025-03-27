@@ -58,17 +58,17 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: |
-            echo "$ECR_REGISTRY"
-            echo "$ECR_REPOSITORY"
-            echo "$IMAGE_TAG"
+            echo ">>>>>>>> $ECR_REGISTRY"  >> $GITHUB_OUTPUT
+            echo ">>>>>>>> $ECR_REPOSITORY"  >> $GITHUB_OUTPUT
+            echo ">>>>>>>> $IMAGE_TAG"  >> $GITHUB_OUTPUT
             
             docker stop ${{ env.DOCKER_CONTAINER }} || true
             docker rm ${{ env.DOCKER_CONTAINER }} || true
             docker rmi ${{ env.ECR_REPOSITORY }} || true
             
-            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
-            docker pull ${{ secrets.ECR_URI }}/$ECR_REPOSITORY:$IMAGE_TAG
-            docker run -d -p 8080:8080 --name ${{ env.DOCKER_CONTAINER }} ${{ secrets.ECR_URI }}/$ECR_REPOSITORY:$IMAGE_TAG
+            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_REGISTRY
+            docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+            docker run -d -p 8080:8080 --name ${{ env.DOCKER_CONTAINER }} $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             
             
 
