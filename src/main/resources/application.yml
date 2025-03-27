@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: count10shop
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+management:
+  endpoint:
+    health:
+      show-details: when_authorized
+  endpoints:
+    jmx:
+      exposure:
+        include: health
+
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}
