@@ -58,7 +58,7 @@ jobs:
             docker rm ${{ env.DOCKER_CONTAINER }} || true
             docker rmi ${{ env.ECR_REPOSITORY }} || true
             
-            aws ecr get-login-password --region ${{ env.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+            aws ecr get-login-password --profile spring-boot-server --region ${{ env.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
             docker pull $ECR_REPOSITORY:$IMAGE_TAG
             docker run -d -p 8080:8080 --name ${{ env.DOCKER_CONTAINER }} ${{ env.ECR_REPOSITORY }}
             
