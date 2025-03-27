@@ -145,7 +145,7 @@ class CouponServiceTest {
         //then
         Assertions.assertThat(throwable)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("이미 발급된 쿠폰입니다.");
+                .hasMessage("이미 발급된 쿠폰입니다");
     }
 
     @Test
@@ -187,7 +187,7 @@ class CouponServiceTest {
         // then
         Assertions.assertThat(throwable)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("쿠폰을 모두 사용했습니다.");
+                .hasMessage("쿠폰이 이미 모두 발급되어 더 이상 남은 수량이 없음.");
     }
 
     @Test

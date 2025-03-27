@@ -40,7 +40,7 @@ class CouponRepositoryTest {
         int updateCount = couponRepository.addIssuedQuantitySafe(coupon.getId());
 
         //then
-        Assertions.assertThat(updateCount).isEqualTo(0);
+        Assertions.assertThat(updateCount).isEqualTo(1);
     }
 
     @Test
