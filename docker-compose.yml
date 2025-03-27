@@ -40,3 +40,7 @@ services:
 volumes:
   es-data:
     driver: local
+
+networks:
+  es-bridge:
+    driver: bridge
