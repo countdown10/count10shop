@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 public class IssuedCouponResponse {
     private Long issuedCouponId;
     private Long couponId;
+    private Long userId;
     private String name;
     private String content;
     private Integer discountAmount;
@@ -32,6 +33,7 @@ public class IssuedCouponResponse {
         IssuedCouponResponse response = new IssuedCouponResponse();
         response.issuedCouponId = issuedCoupon.getId();
         response.couponId = issuedCoupon.getCoupon().getId();
+        response.userId = issuedCoupon.getUserId();
         response.name = issuedCoupon.getCoupon().getName();
         response.content = issuedCoupon.getCoupon().getContent();
         response.discountAmount = issuedCoupon.getCoupon().getDiscountAmount();

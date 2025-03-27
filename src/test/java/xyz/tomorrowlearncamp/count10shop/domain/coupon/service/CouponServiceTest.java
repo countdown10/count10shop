@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.dto.request.CreateCouponRequest;
+import xyz.tomorrowlearncamp.count10shop.domain.coupon.dto.response.CouponResponse;
+import xyz.tomorrowlearncamp.count10shop.domain.coupon.dto.response.IssuedCouponResponse;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.Coupon;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.CouponStatus;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.IssuedCoupon;
@@ -137,6 +139,7 @@ class CouponServiceTest {
                 .build();
         return couponRepository.save(coupon);
     }
+
     @Test
     @DisplayName("쿠폰_발급_실패-이미_발급된_쿠폰")
     void issueCoupon_fail_1() {
@@ -228,13 +231,87 @@ class CouponServiceTest {
     }
 
     @Test
-    void getCoupons() {
+    @DisplayName("전체_쿠폰_목록_조회_성공")
+    void getCoupons_success() {
+        //given
+        couponRepository.save(Coupon.builder()
+                .name("첫 번째 쿠폰")
+                .content("테스트1")
+                .minOrderPrice(10000)
+                .discountAmount(1000)
+                .totalQuantity(10)
+                .issuedQuantity(0)
+                .couponStatus(CouponStatus.CREATED)
+                .expiredAt(LocalDateTime.now().plusDays(5))
+                .build());
+
+        couponRepository.save(Coupon.builder()
+                .name("두 번째 쿠폰")
+                .content("테스트2")
+                .minOrderPrice(20000)
+                .discountAmount(2000)
+                .totalQuantity(5)
+                .issuedQuantity(1)
+                .couponStatus(CouponStatus.CREATED)
+                .expiredAt(LocalDateTime.now().plusDays(5))
+                .build());
+
+        // when
+        List<CouponResponse> responses = couponService.getCoupons();
+
+        // then
+        Assertions.assertThat(responses).hasSize(2);
+        Assertions.assertThat(responses.get(0).getName()).isEqualTo("첫 번째 쿠폰");
+        Assertions.assertThat(responses.get(1).getName()).isEqualTo("두 번째 쿠폰");
 
     }
 
     @Test
-    void getUserCoupons() {
+    @DisplayName("유저_쿠폰목록_조회_성공")
+    void getUserCoupons_success() {
+        // given
+        CreateCouponRequest request = CreateCouponRequest.builder()
+                .name("테스트 쿠폰")
+                .content("유저 쿠폰 조회용")
+                .discountAmount(2000)
+                .minOrderPrice(10000)
+                .totalQuantity(5)
+                .expiredAt(LocalDateTime.now().plusDays(5))
+                .build();
 
+        Long couponId = couponService.createCoupon(request);
+        Coupon coupon = couponRepository.findById(couponId)
+                .orElseThrow(() -> new IllegalArgumentException("쿠폰 없음"));
+        coupon.activate();
+
+        Long userId = 100L;
+        couponService.issueCoupon(couponId, userId);
+
+        // when
+        List<IssuedCouponResponse> userCoupons = couponService.getUserCoupons(userId);
+
+        // then
+        Assertions.assertThat(userCoupons).hasSize(1);
+        IssuedCouponResponse response = userCoupons.get(0);
+        Assertions.assertThat(response.getUserId()).isEqualTo(userId);
+        Assertions.assertThat(response.getCouponId()).isEqualTo(couponId);
+        Assertions.assertThat(response.getStatus()).isEqualTo(IssuedCouponStatus.UNUSED);
+        Assertions.assertThat(response.getName()).isEqualTo("테스트 쿠폰");
+        Assertions.assertThat(response.getContent()).isEqualTo("유저 쿠폰 조회용");
+        Assertions.assertThat(response.getDiscountAmount()).isEqualTo(2000);
+    }
+
+    @Test
+    @DisplayName("유저_쿠폰목록_조회_실패_없을때")
+    void getUserCoupons_fail() {
+        //given
+        Long userId = 9L;
+
+        // when
+        List<IssuedCouponResponse> userCoupons = couponService.getUserCoupons(userId);
+
+        // then
+        Assertions.assertThat(userCoupons).isEmpty();
     }
 
     @Test
