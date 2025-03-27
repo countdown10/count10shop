@@ -7,6 +7,7 @@ on:
 
 env:
   AWS_REGION: ap-southeast-2  # AWS 리전 (서울 리전)
+  ECR_REPOSITORY: countdown10shop
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
@@ -50,9 +51,9 @@ jobs:
           key: ${{ secrets.AWS_EC2_SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: whoami
-#        env:
-#          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-#          IMAGE_TAG: ${{ github.sha }}
-#        run: |
-#          docker pull ${{ AWS_COUNT_ID }}.ecr.${{ AWS_REGION }}.amazonaws.com/$ECR_REGISTRY:$IMAGE_TAG
-#          docker run -d $ECR_REGISTRY:$IMAGE_TAG
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker pull ${{ AWS_COUNT_ID }}.ecr.${{ AWS_REGION }}.amazonaws.com/$ECR_REGISTRY:$IMAGE_TAG
+          docker run -d $ECR_REGISTRY:$IMAGE_TAG
