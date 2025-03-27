@@ -29,41 +29,31 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Set ECR_REGISTRY env variable
+        run: echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" >> $GITHUB_ENV
+
       - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ env.IMAGE_TAG }}
-          AWS_REGION: ${{ env.AWS_REGION }}
         run: |
-          echo "ECR Registry: ${{ steps.login-ecr.outputs.registry }}"
+          echo "ECR Registry: $ECR_REGISTRY"
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: Deploy
-        id: build-deploy
         uses: appleboy/ssh-action@master
-        env:
-          DOCKER_CONTAINER: container
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
-          IMAGE_TAG: ${{ env.IMAGE_TAG }}
-          AWS_REGION: ${{ env.AWS_REGION }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: |
-            echo "ECR Registry: ${{ steps.login-ecr.outputs.registry }}"
+            echo "ECR Registry: ${{ env.ECR_REGISTRY }}"
             echo "ECR Repository: ${{ env.ECR_REPOSITORY }}"
             echo "Image Tag: ${{ env.IMAGE_TAG }}"
             
-            docker stop $DOCKER_CONTAINER || true
-            docker rm $DOCKER_CONTAINER || true
-            docker rmi $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG || true
+            docker stop container || true
+            docker rm container || true
+            docker rmi ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} || true
             
-            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
-            docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-            docker run -d -p 8080:8080 --name $DOCKER_CONTAINER $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
+            docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+            docker run -d -p 8080:8080 --name container ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
