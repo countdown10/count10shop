@@ -7,7 +7,6 @@ on:
 
 env:
   AWS_REGION: ap-southeast-2  # AWS 리전 (서울 리전)
-  ECR_REPOSITORY: countdown10shop  # ECR 리포지토리 이름
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
@@ -41,3 +40,19 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Deploy
+        id: build-deploy
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.AWS_EC2_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          script: whoami
+#        env:
+#          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#          IMAGE_TAG: ${{ github.sha }}
+#        run: |
+#          docker pull ${{ AWS_COUNT_ID }}.ecr.${{ AWS_REGION }}.amazonaws.com/$ECR_REGISTRY:$IMAGE_TAG
+#          docker run -d $ECR_REGISTRY:$IMAGE_TAG
