@@ -38,3 +38,14 @@ out/
 
 ### properties ###
 *.properties
+
+### application ###
+application-local.yml
+.env
+*.env
+
+### log ###
+
+logs/
+
+/src/main/resources/logback-spring.xml
