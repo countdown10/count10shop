@@ -8,8 +8,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ItemDocumentPageResponseDto{
-	List<ItemDocumentResponseDto> items;
-	int currentPageNum;
-	int totalPages;
-	long totalElements;
+	private List<ItemDocumentResponseDto> items;
+	private int currentPageNum;
+	private int totalPages;
+	private long totalElements;
 }

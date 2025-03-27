@@ -17,7 +17,7 @@ public class ItemSearchController {
 	private final ItemSearchService itemSearchService;
 
 	@GetMapping
-	ResponseEntity<ItemDocumentPageResponseDto> search(
+	public ResponseEntity<ItemDocumentPageResponseDto> search(
 		@RequestParam String keyword,
 		@RequestParam (defaultValue = "1") int page,
 		@RequestParam (defaultValue = "10") int size
