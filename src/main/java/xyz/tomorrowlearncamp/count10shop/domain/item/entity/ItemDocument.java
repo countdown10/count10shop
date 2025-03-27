@@ -48,7 +48,7 @@ public class ItemDocument {
 		this.quantity = quantity;
 	}
 
-	public static ItemDocument from(Item item) {
+	public static ItemDocument of(Item item) {
 		return ItemDocument.builder()
 			.id(item.getId())
 			.itemName(item.getItemName())

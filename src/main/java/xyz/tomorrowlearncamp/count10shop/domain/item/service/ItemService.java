@@ -47,7 +47,7 @@ public class ItemService {
 			.build();
 
 		itemRepository.save(item);
-		itemElasticRepository.save(ItemDocument.from(item));
+		itemElasticRepository.save(ItemDocument.of(item));
 	}
 
 	@Transactional
@@ -55,7 +55,7 @@ public class ItemService {
 		Item savedItem = itemRepository.findByIdOrElseThrow(id);
 
 		savedItem.updateInfo(itemName, category, description, price, quantity);
-		itemElasticRepository.save(ItemDocument.from(savedItem));
+		itemElasticRepository.save(ItemDocument.of(savedItem));
 	}
 
 	@Transactional
@@ -63,6 +63,6 @@ public class ItemService {
 		Item savedItem = itemRepository.findByIdOrElseThrow(id);
 
 		savedItem.updateStatus(status);
-		itemElasticRepository.save(ItemDocument.from(savedItem));
+		itemElasticRepository.save(ItemDocument.of(savedItem));
 	}
 }
