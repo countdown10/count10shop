@@ -1,7 +1,6 @@
 name: Deploy to AWS ECR
 
 on:
-  workflow_dispatch:
   pull_request:
     branches:
       - feat/*
