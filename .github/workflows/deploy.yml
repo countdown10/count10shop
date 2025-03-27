@@ -55,11 +55,11 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: |
-            docker stop ${{ DOCKER_CONTAINER }}
-            docker rm ${{ DOCKER_CONTAINER }}
-            docker rmi ${{ ECR_REPOSITORY }}
+            docker stop ${{ env.DOCKER_CONTAINER }}
+            docker rm ${{ env.DOCKER_CONTAINER }}
+            docker rmi ${{ env.ECR_REPOSITORY }}
             docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-            docker run -d -p 8080:8080 --name ${{ DOCKER_CONTAINER }} ${{ ECR_REPOSITORY }}
+            docker run -d -p 8080:8080 --name ${{ env.DOCKER_CONTAINER }} ${{ env.ECR_REPOSITORY }}
             
             
 
