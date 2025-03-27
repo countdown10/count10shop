@@ -50,4 +50,8 @@ public class Coupon extends BaseEntity {
     public void addIssuedQuantity() {
         this.issuedQuantity += 1;
     }
+
+    public void activate() {
+        this.couponStatus = CouponStatus.AVAILABLE;
+    }
 }

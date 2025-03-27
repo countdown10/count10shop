@@ -49,12 +49,12 @@ public class CouponService {
                 .orElseThrow(() -> new IllegalArgumentException("없는 쿠폰입니다."));
 
         if (coupon.getIssuedQuantity() >= coupon.getTotalQuantity()) {
-            throw new IllegalStateException("쿠폰을 모두 사용했습니다.");
+            throw new IllegalStateException("쿠폰이 이미 모두 발급되어 더 이상 남은 수량이 없음.");
         }
         coupon.addIssuedQuantity();
 
-        if (coupon.getCouponStatus() != CouponStatus.ACTIVE) {
-            throw new IllegalStateException("'ACTIVE' 가 아니라서쿠폰 발급 불가능합니다.");
+        if (coupon.getCouponStatus() != CouponStatus.AVAILABLE) {
+            throw new IllegalStateException("'AVAILABLE' 가 아니라서 쿠폰 발급 불가능합니다.");
         }
 
         IssuedCoupon issuedCoupon = IssuedCoupon.builder()

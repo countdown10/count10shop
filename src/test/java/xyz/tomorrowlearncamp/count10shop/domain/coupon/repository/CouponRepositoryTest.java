@@ -12,8 +12,6 @@ import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.CouponStatus;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @DataJpaTest
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -33,7 +31,7 @@ class CouponRepositoryTest {
                 .discountAmount(1000)
                 .totalQuantity(5)
                 .issuedQuantity(4)
-                .couponStatus(CouponStatus.ACTIVE)
+                .couponStatus(CouponStatus.AVAILABLE)
                 .expiredAt(LocalDateTime.now().plusDays(1))
                 .build();
         couponRepository.save(coupon);
@@ -56,7 +54,7 @@ class CouponRepositoryTest {
                 .discountAmount(1000)
                 .totalQuantity(5)
                 .issuedQuantity(2)
-                .couponStatus(CouponStatus.ACTIVE)
+                .couponStatus(CouponStatus.AVAILABLE)
                 .expiredAt(LocalDateTime.now().plusDays(1))
                 .build();
         couponRepository.save(coupon);
@@ -93,7 +91,7 @@ class CouponRepositoryTest {
                 .discountAmount(1000)
                 .totalQuantity(10)
                 .issuedQuantity(1)
-                .couponStatus(CouponStatus.ACTIVE)
+                .couponStatus(CouponStatus.AVAILABLE)
                 .expiredAt(LocalDateTime.now().plusDays(1))
                 .build();
         Coupon saved = couponRepository.save(coupon);
