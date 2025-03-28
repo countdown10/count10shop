@@ -23,10 +23,6 @@ public class ItemSearchService {
 	private final ItemElasticRepository itemElasticRepository;
 
 	public ItemDocumentPageResponseDto searchByKeyword(String keyword, int page, int size) {
-		if (keyword.isBlank()) {
-			throw new InvalidRequestException("keyword는 필수입니다.");
-		}
-
 		Pageable pageable = PageRequest.of(page - 1, size);
 
 		if (isKorean(keyword)) {
