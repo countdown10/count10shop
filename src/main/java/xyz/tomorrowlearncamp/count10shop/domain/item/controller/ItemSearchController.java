@@ -11,12 +11,12 @@ import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemDocumentPa
 import xyz.tomorrowlearncamp.count10shop.domain.item.service.ItemSearchService;
 
 @RestController
-@RequestMapping("api/v1/search")
+@RequestMapping("api")
 @RequiredArgsConstructor
 public class ItemSearchController {
 	private final ItemSearchService itemSearchService;
 
-	@GetMapping
+	@GetMapping("/v1/search")
 	public ResponseEntity<ItemDocumentPageResponseDto> search(
 		@RequestParam String keyword,
 		@RequestParam (defaultValue = "1") int page,

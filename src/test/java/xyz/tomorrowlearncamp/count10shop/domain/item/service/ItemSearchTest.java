@@ -1,5 +1,6 @@
 package xyz.tomorrowlearncamp.count10shop.domain.item.service;
 
+import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -12,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import xyz.tomorrowlearncamp.count10shop.domain.common.exception.InvalidRequestException;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemDocumentPageResponseDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.ItemDocument;
 import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Category;
@@ -76,8 +78,9 @@ public class ItemSearchTest {
 		String keyword = "BEAUTY";
 		ItemDocument itemDocument = new ItemDocument(1L, "미용상품", 15000L, Category.BEAUTY, "미용상품", Status.SALE, 10L);
 		ItemDocument itemDocument2 = new ItemDocument(2L, "음식", 15000L, Category.FOOD, "맛난음식", Status.SALE, 10L);
-		ItemDocument itemDocument3 = new ItemDocument(3L, "BeautyProduct", 30000L, Category.BEAUTY, "미용상품", Status.SALE, 10L);
-		List<ItemDocument> itemList = List.of(itemDocument,itemDocument2, itemDocument3);
+		ItemDocument itemDocument3 = new ItemDocument(3L, "BeautyProduct", 30000L, Category.BEAUTY, "미용상품", Status.SALE,
+			10L);
+		List<ItemDocument> itemList = List.of(itemDocument, itemDocument2, itemDocument3);
 
 		List<ItemDocument> mockResult = itemList.stream()
 			.filter(item -> item.getCategory().name().equals(keyword))
@@ -97,6 +100,17 @@ public class ItemSearchTest {
 		verify(itemElasticRepository, times(1)).searchByItemNameOrCategory(keyword);
 	}
 
+	@Test
+	@DisplayName("keyword에 아무것도 작성 안하거나 공백일때 오류 던지기")
+	void keyword_isBlank_Test(){
+		//given
+		String keyword = " ";
+		int page = 1;
+		int size = 10;
 
-
+		//then
+		assertThatExceptionOfType(InvalidRequestException.class)
+			.isThrownBy(() -> itemSearchService.searchByKeyword(keyword, page, size))
+			.withMessage("keyword는 필수입니다.");
+	}
 }

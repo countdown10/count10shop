@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import xyz.tomorrowlearncamp.count10shop.domain.common.exception.InvalidRequestException;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemDocumentPageResponseDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemDocumentResponseDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.ItemDocument;
@@ -22,6 +23,10 @@ public class ItemSearchService {
 	private final ItemElasticRepository itemElasticRepository;
 
 	public ItemDocumentPageResponseDto searchByKeyword(String keyword, int page, int size) {
+		if (keyword.isBlank()) {
+			throw new InvalidRequestException("keyword는 필수입니다.");
+		}
+
 		Pageable pageable = PageRequest.of(page - 1, size);
 
 		if (isKorean(keyword)) {
