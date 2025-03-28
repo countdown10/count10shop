@@ -20,3 +20,8 @@ COPY --from=builder /app/build/libs/*.jar app.jar
 EXPOSE 8080
 
 ENTRYPOINT ["java","-jar","app.jar"]
+
+#ElasticSearch nori download
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.7.1
+
+RUN elasticsearch-plugin install analysis-nori
