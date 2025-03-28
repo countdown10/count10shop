@@ -50,6 +50,8 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     //ElasticSearch 의존성
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    //h2-console 접속용
+    compileOnly("org.springframework.boot:spring-boot-devtools")
 }
 
 tasks.named('test') {
