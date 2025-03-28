@@ -7,7 +7,6 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.ItemDocument;
 
-
 public interface ItemElasticRepository extends ElasticsearchRepository<ItemDocument, Long> {
 
 	@Query("{\"match\": {\"itemName.korean\": \"?0\"}}")
