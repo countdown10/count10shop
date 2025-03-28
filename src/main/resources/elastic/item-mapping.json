@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "id": {
+      "type": "long"
+    },
+    "itemName": {
+      "type": "text",
+      "fields" : {
+        "korean" : {
+          "type" : "text",
+          "analyzer": "korean"
+        },
+        "english" : {
+          "type" : "text",
+          "analyzer" : "custom_snowball"
+        }
+      }
+    },
+    "category": {
+      "type": "keyword",
+      "normalizer" : "lowercase_normalizer"
+    },
+    "description": {
+      "type": "text",
+      "analyzer": "korean"
+    },
+    "price": {
+      "type": "long"
+    },
+    "quantity": {
+      "type": "long"
+    },
+    "status": {
+      "type" : "keyword",
+      "normalizer" : "lowercase_normalizer"
+    }
+  }
+}
