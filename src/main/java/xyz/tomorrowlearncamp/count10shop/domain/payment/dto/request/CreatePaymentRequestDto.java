@@ -11,5 +11,5 @@ public class CreatePaymentRequestDto {
 	private final Long itemId;
 
 	// todo: coupon 도메인 완료시 추가
-	private String coupon;
+	private final Long issuedCouponId;
 }

@@ -34,7 +34,7 @@ public class PessimisticLockPaymentService implements PaymentService {
 	}
 
 	@Transactional
-	public PaymentResponseDto purchaseItem(Long itemId) {
+	public PaymentResponseDto purchaseItem(Long itemId, Long issuedCouponId) {
 		Item savedItem = itemRepository.findByIdWithPessimisticLockOrEseThrow(itemId);
 
 		savedItem.checkItemStatus();
