@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import lombok.RequiredArgsConstructor;
+import xyz.tomorrowlearncamp.count10shop.domain.coupon.service.CouponService;
 import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;
 import xyz.tomorrowlearncamp.count10shop.domain.item.service.ItemService;
 import xyz.tomorrowlearncamp.count10shop.domain.common.aop.LettuceLockService;
