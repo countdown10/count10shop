@@ -95,7 +95,9 @@ class CouponServiceTest {
         Throwable throwable = catchThrowable(() -> couponService.createCoupon(createCouponRequest));
 
         // then
-        assertThat(throwable).isInstanceOf(Exception.class);
+        assertThat(throwable)
+                    .isInstanceOf(NullPointerException.class)
+                    .hasMessageContaining("name");
         /*
         name은 필수값인데, null로 주니까 하이버네이트가 insert쿼리 날리다가 db에러[23502-232]받음.
          */
