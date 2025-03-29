@@ -1,9 +1,20 @@
 spring:
+#  레디스
+  data:
+    redis:
+      port: 6379
+      host: redis
+      connect-timeout: 3000
   application:
     name: count10shop
   jpa:
     hibernate:
       ddl-auto: none
+#      엘라스틱서치
+  elasticsearch:
+    uris: es:9200
+  profiles:
+    default: dev
 
 management:
   endpoint:

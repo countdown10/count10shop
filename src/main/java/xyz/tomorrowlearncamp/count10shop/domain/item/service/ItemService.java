@@ -11,14 +11,17 @@ import xyz.tomorrowlearncamp.count10shop.domain.common.exception.InvalidRequestE
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemListResponseDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemResponseDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.Item;
+import xyz.tomorrowlearncamp.count10shop.domain.item.entity.ItemDocument;
 import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Category;
 import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Status;
+import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemElasticRepository;
 import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;
 
 @Service
 @RequiredArgsConstructor
 public class ItemService {
 	private final ItemRepository itemRepository;
+	private final ItemElasticRepository itemElasticRepository;
 
 	public Page<ItemListResponseDto> findAll(int page, int size, String category) {
 		Pageable pageable = PageRequest.of(page - 1, size);
@@ -50,6 +53,7 @@ public class ItemService {
 			.build();
 
 		itemRepository.save(item);
+		itemElasticRepository.save(ItemDocument.of(item));
 	}
 
 	@Transactional
@@ -57,6 +61,7 @@ public class ItemService {
 		Item savedItem = itemRepository.findByIdOrElseThrow(id);
 
 		savedItem.updateInfo(itemName, category, description, price, quantity);
+		itemElasticRepository.save(ItemDocument.of(savedItem));
 	}
 
 	@Transactional
@@ -64,5 +69,6 @@ public class ItemService {
 		Item savedItem = itemRepository.findByIdOrElseThrow(id);
 
 		savedItem.updateStatus(Status.valueOf(status));
+		itemElasticRepository.save(ItemDocument.of(savedItem));
 	}
 }

@@ -30,7 +30,6 @@ public class Item {
 	@Enumerated(EnumType.STRING)
 	private Category category;
 
-	@Column
 	private String description;
 
 	@Column(nullable = false)
