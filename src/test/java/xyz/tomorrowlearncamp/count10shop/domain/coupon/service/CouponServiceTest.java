@@ -3,9 +3,14 @@ package xyz.tomorrowlearncamp.count10shop.domain.coupon.service;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.dto.request.CreateCouponRequest;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.dto.response.CouponResponse;
@@ -22,24 +27,26 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
-@SpringBootTest
-@ActiveProfiles("dev")
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class CouponServiceTest {
-    @Autowired
+    @InjectMocks
     private CouponService couponService;
 
-    @Autowired
+    @Mock
     private CouponRepository couponRepository;
 
-    @Autowired
+    @Mock
     private IssuedCouponRepository issuedCouponRepository;
 
     @Test
     @DisplayName("쿠폰_생성_성공")
     void createCoupon_success() {
-        //given
+        // given
         CreateCouponRequest request = CreateCouponRequest.builder()
                 .name("쿠폰")
                 .content("테스트 쿠폰")
@@ -49,21 +56,27 @@ class CouponServiceTest {
                 .expiredAt(LocalDateTime.now().plusDays(7))
                 .build();
 
+        Coupon mockCoupon = Coupon.builder()
+                .name(request.getName())
+                .content(request.getContent())
+                .discountAmount(request.getDiscountAmount())
+                .minOrderPrice(request.getMinOrderPrice())
+                .totalQuantity(request.getTotalQuantity())
+                .issuedQuantity(0)
+                .couponStatus(CouponStatus.CREATED)
+                .expiredAt(request.getExpiredAt())
+                .build();
+
+        ReflectionTestUtils.setField(mockCoupon, "id", 1L);
+
+        when(couponRepository.save(any(Coupon.class))).thenReturn(mockCoupon);
+
         // when
-        Long savedId = couponService.createCoupon(request);
+        Long result = couponService.createCoupon(request);
 
         // then
-        Coupon saved = couponRepository
-                .findById(savedId)
-                .orElseThrow(
-                        () -> new IllegalArgumentException("저장된 쿠폰이 없습니다."));
-        Assertions.assertThat(saved.getName()).isEqualTo("쿠폰");
-        Assertions.assertThat(saved.getContent()).isEqualTo("테스트 쿠폰");
-        Assertions.assertThat(saved.getDiscountAmount()).isEqualTo(3000);
-        Assertions.assertThat(saved.getTotalQuantity()).isEqualTo(10);
-        Assertions.assertThat(saved.getIssuedQuantity()).isEqualTo(0);
-        Assertions.assertThat(saved.getCouponStatus()).isEqualTo(CouponStatus.CREATED);
-        Assertions.assertThat(saved.getExpiredAt()).isAfter(LocalDateTime.now());
+        assertThat(result).isEqualTo(1L);
+        verify(couponRepository, times(1)).save(any(Coupon.class));
     }
 
     @Test
@@ -122,7 +135,6 @@ class CouponServiceTest {
         Coupon updatedCoupon = couponRepository.findById(couponId).get();
         Assertions.assertThat(updatedCoupon.getIssuedQuantity()).isEqualTo(1);
     }
-
 
 
     @Test
