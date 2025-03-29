@@ -58,9 +58,9 @@ jobs:
             
 #            이미지 시작
             docker run -d -p 8080:8080\
-            -e "DB_URL=${{ secrets.AWS_RDS_URL }}"\
-            -e "DB_USER=${{ secrets.AWS_RDS_USER }}"\
-            -e "DB_USER_PASSWORD=${{ secrets.AWS_RDS_USER_PASSWORD }}"\
+#            -e "DB_URL=${{ secrets.AWS_RDS_URL }}"\
+#            -e "DB_USER=${{ secrets.AWS_RDS_USER }}"\
+#            -e "DB_USER_PASSWORD=${{ secrets.AWS_RDS_USER_PASSWORD }}"\
             --ulimit nproc=60000\
             --net count10shop_default\
             --name container\
