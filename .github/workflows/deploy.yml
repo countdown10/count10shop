@@ -46,18 +46,12 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_PORT }}
-          script: |            
-#            기존 도커 정지
+          script: |
             docker stop container || true
             docker rm container || true
             docker rmi ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} || true
             
-#            이미지 다운로드
             aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
             docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
             
-#            이미지 시작
             docker run -d -p 8080:8080 --name container --ulimit nproc=60000 --net count10shop_default ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
-#                    -e DB_URL=${{ secrets.AWS_RDS_URL }} \
-#                    -e DB_USER=${{ secrets.AWS_RDS_USER }} \
-#                    -e DB_USER_PASSWORD=${{ secrets.AWS_RDS_USER_PASSWORD }} \
