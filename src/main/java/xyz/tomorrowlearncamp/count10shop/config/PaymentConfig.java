@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import lombok.RequiredArgsConstructor;
+import xyz.tomorrowlearncamp.count10shop.domain.coupon.service.CouponService;
 import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;
 import xyz.tomorrowlearncamp.count10shop.domain.item.service.ItemService;
 import xyz.tomorrowlearncamp.count10shop.domain.common.aop.LettuceLockService;
@@ -22,13 +23,14 @@ public class PaymentConfig {
 	private final ItemRepository itemRepository;
 	private final LettuceLockService lettuceLockService;
 	private final RedissonClient redissonClient;
+	private final CouponService couponService;
 
 	@Bean
 	public PaymentService paymentService() {
-		return new RedissonLockPaymentService(paymentRepository, itemService, itemRepository, redissonClient);
+		// return new RedissonLockPaymentService(paymentRepository, itemService, itemRepository, redissonClient);
 		// return new RedissonAOPLockPaymentService(paymentRepository, itemService);
 		// return new LettuceLockPaymentService(paymentRepository, itemService);
-		// return new PessimisticLockPaymentService(paymentRepository, itemRepository);
+		return new PessimisticLockPaymentService(paymentRepository, itemRepository, couponService);
 		// return new OptimisticLockPaymentService(paymentRepository, itemService, itemRepository);
 		// return new NoLockPaymentService(paymentRepository, itemService);
 	}
