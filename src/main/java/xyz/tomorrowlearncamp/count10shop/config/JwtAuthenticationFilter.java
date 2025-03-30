@@ -27,7 +27,7 @@ import xyz.tomorrowlearncamp.count10shop.domain.user.enums.UserRole;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-	private JwtUtil jwtUtil;
+	private final JwtUtil jwtUtil;
 
 	@Override
 	protected void doFilterInternal(
@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	}
 
 	private void setAuthentication(Claims claims) {
-		Long userId = Long.valueOf(claims.getSubject());
+		Long userId = claims.get("id", Long.class);
 		String email = claims.get("email", String.class);
 		UserRole userRole = UserRole.of(claims.get("userRole", String.class));
 

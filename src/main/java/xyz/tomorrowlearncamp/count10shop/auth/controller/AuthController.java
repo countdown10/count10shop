@@ -38,7 +38,7 @@ public class AuthController {
 		@Valid @RequestBody LoginUserRequestDto requestDto
 	) {
 		LoginUserResponseDto responseDto = authService.login(requestDto.getEmail(), requestDto.getPassword());
-		JwtToken jwtToken = jwtUtil.generateToken(responseDto.getId(), responseDto.getEmail());
+		JwtToken jwtToken = jwtUtil.generateToken(responseDto.getId(), responseDto.getEmail(), responseDto.getUserRole());
 
 		return ResponseEntity.ok()
 			.header(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getAccessToken())
