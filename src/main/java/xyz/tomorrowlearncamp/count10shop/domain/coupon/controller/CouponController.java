@@ -23,7 +23,7 @@ public class CouponController {
 
     // 쿠폰 생성
     @PostMapping("/v1/coupons")
-    public ResponseEntity<Long> createCoupon(@RequestBody @Valid CreateCouponRequest createCouponRequest) {
+    public ResponseEntity<Long> crateCoupon(@RequestBody @Valid CreateCouponRequest createCouponRequest) {
         // TODO: ADMIN 권한 체크 필요
         Long id = couponService.createCoupon(createCouponRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);

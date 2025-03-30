@@ -35,6 +35,9 @@ public class CouponService {
                 .couponStatus(CouponStatus.CREATED)
                 .expiredAt(request.getExpiredAt())
                 .build();
+
+        coupon.activate();
+
         return couponRepository.save(coupon).getId();
     }
 

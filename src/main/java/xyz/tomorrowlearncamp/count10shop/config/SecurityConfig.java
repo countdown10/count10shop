@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 
 import lombok.RequiredArgsConstructor;
+import xyz.tomorrowlearncamp.count10shop.domain.common.util.JwtUtil;
 import xyz.tomorrowlearncamp.count10shop.domain.user.enums.UserRole;
 
 @Configuration
@@ -19,8 +20,13 @@ import xyz.tomorrowlearncamp.count10shop.domain.user.enums.UserRole;
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
+    private final JwtUtil jwtUtil;
+    // private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtUtil);
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -34,7 +40,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(jwtAuthenticationFilter, SecurityContextHolderAwareRequestFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), SecurityContextHolderAwareRequestFilter.class)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .anonymous(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
@@ -45,6 +51,7 @@ public class SecurityConfig {
                         .requestMatchers("/test").hasAuthority(UserRole.Authority.ADMIN)
                         .requestMatchers("/open").permitAll()
                         .requestMatchers("/api/v1/coupons").permitAll()
+                        .requestMatchers("/api/v1/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();
