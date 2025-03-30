@@ -45,7 +45,7 @@ class NoLockPaymentServiceTest {
 		given(paymentRepository.save(any(Payment.class))).willReturn(savedPayment);
 
 		// when
-		PaymentResponseDto dto = noLockPaymentService.purchaseItem(1L);
+		PaymentResponseDto dto = noLockPaymentService.purchaseItem(1L, 1L);
 
 		// then
 		assertNotNull(dto);
@@ -62,7 +62,7 @@ class NoLockPaymentServiceTest {
 
 		// when
 		InvalidRequestException exception = assertThrows(InvalidRequestException.class,
-			() -> noLockPaymentService.purchaseItem(1L));
+			() -> noLockPaymentService.purchaseItem(1L, 1L));
 
 		// then
 		assertEquals("해당 상품은 판매하지 않습니다.", exception.getMessage());
@@ -78,7 +78,7 @@ class NoLockPaymentServiceTest {
 
 		// when
 		InvalidRequestException exception = assertThrows(InvalidRequestException.class,
-			() -> noLockPaymentService.purchaseItem(1L));
+			() -> noLockPaymentService.purchaseItem(1L, 1L));
 
 		// then
 		assertEquals("재고가 없습니다.", exception.getMessage());
@@ -96,7 +96,7 @@ class NoLockPaymentServiceTest {
 		given(paymentRepository.save(any(Payment.class))).willReturn(savedPayment);
 
 		// when
-		PaymentResponseDto dto = noLockPaymentService.purchaseItem(1L);
+		PaymentResponseDto dto = noLockPaymentService.purchaseItem(1L, 1L);
 
 		// then
 		assertNotNull(dto);
@@ -104,7 +104,7 @@ class NoLockPaymentServiceTest {
 		assertEquals(item.getStatus(), Status.SALE);
 
 		// when
-		PaymentResponseDto dto2 = noLockPaymentService.purchaseItem(1L);
+		PaymentResponseDto dto2 = noLockPaymentService.purchaseItem(1L, 1L);
 
 		// then
 		assertNotNull(dto2);
@@ -113,7 +113,7 @@ class NoLockPaymentServiceTest {
 
 		// when
 		InvalidRequestException exception = assertThrows(InvalidRequestException.class,
-			() -> noLockPaymentService.purchaseItem(1L));
+			() -> noLockPaymentService.purchaseItem(1L, 1L));
 
 		// then
 		assertEquals("재고가 없습니다.", exception.getMessage());
@@ -138,7 +138,7 @@ class NoLockPaymentServiceTest {
 		for (int i = 0; i < testCount; i++) {
 			executorService.submit(() -> {
 				try {
-					noLockPaymentService.purchaseItem(1L);
+					noLockPaymentService.purchaseItem(1L, 1L);
 					successfulUpdates.decrementAndGet();
 				} catch (Exception e) {
 					System.out.println("예외 발생: " + e.getMessage());

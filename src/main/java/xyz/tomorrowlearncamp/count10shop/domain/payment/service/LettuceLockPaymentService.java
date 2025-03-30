@@ -34,7 +34,7 @@ public class LettuceLockPaymentService implements PaymentService {
 	}
 
 	@Transactional
-	public PaymentResponseDto purchaseItem(Long itemId) {
+	public PaymentResponseDto purchaseItem(Long itemId, Long issuedCouponId) {
 		Item savedItem = itemService.findItemByIdOrElseThrow(itemId);
 
 		savedItem.checkItemStatus();

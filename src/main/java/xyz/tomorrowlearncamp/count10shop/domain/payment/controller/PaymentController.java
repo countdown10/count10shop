@@ -19,12 +19,12 @@ import xyz.tomorrowlearncamp.count10shop.domain.payment.service.PaymentService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/payments")
+@RequestMapping("/api")
 public class PaymentController {
 
 	private final PaymentService paymentService;
 
-	@GetMapping
+	@GetMapping("/v1/payments")
 	public ResponseEntity<Page<PaymentListResponseDto>> findAll(
 		// todo: page 객체로
 		@RequestParam(defaultValue = "1") int page,
@@ -33,14 +33,14 @@ public class PaymentController {
 		return ResponseEntity.ok(paymentService.findAll(page, size));
 	}
 
-	@GetMapping("/{paymentId}")
+	@GetMapping("/v1/payments/{paymentId}")
 	public ResponseEntity<PaymentResponseDto> findById(@PathVariable Long paymentId) {
 		return ResponseEntity.ok(paymentService.findById(paymentId));
 	}
 
-	@PostMapping
+	@PostMapping("/v1/payments")
 	public ResponseEntity<Void> purchase(@Valid @RequestBody CreatePaymentRequestDto dto) {
-		paymentService.purchaseItem(dto.getItemId());
+		paymentService.purchaseItem(dto.getItemId(), dto.getIssuedCouponId());
 		return ResponseEntity.ok().build();
 	}
 }
