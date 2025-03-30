@@ -53,6 +53,7 @@ public class CouponController {
     }
 
     // 사용한 쿠폰 처리 (결제 완료 했을때)
+    @Deprecated
     @PatchMapping("/v1/users/{userId}/coupons/{issuedCouponId}/use")
     public ResponseEntity<Void> useCoupon(@PathVariable Long userId,
                                           @PathVariable Long issuedCouponId) {

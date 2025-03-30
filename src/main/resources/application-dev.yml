@@ -1,5 +1,12 @@
 spring:
-
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      connect-timeout: 3000
+  #      엘라스틱서치
+  elasticsearch:
+    uris: localhost:9200
   h2:
     console:
       settings:

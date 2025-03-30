@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import xyz.tomorrowlearncamp.count10shop.domain.coupon.service.CouponService;
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.Item;
 import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;
 import xyz.tomorrowlearncamp.count10shop.domain.payment.dto.response.PaymentListResponseDto;
@@ -19,6 +20,7 @@ import xyz.tomorrowlearncamp.count10shop.domain.payment.repository.PaymentReposi
 public class PessimisticLockPaymentService implements PaymentService {
 	private final PaymentRepository paymentRepository;
 	private final ItemRepository itemRepository;
+	private final CouponService couponService;
 
 	public Page<PaymentListResponseDto> findAll(int page, int size) {
 		Pageable pageable = PageRequest.of(page - 1, size);
@@ -34,7 +36,7 @@ public class PessimisticLockPaymentService implements PaymentService {
 	}
 
 	@Transactional
-	public PaymentResponseDto purchaseItem(Long itemId) {
+	public PaymentResponseDto purchaseItem(Long itemId, Long issuedCouponId) {
 		Item savedItem = itemRepository.findByIdWithPessimisticLockOrEseThrow(itemId);
 
 		savedItem.checkItemStatus();
