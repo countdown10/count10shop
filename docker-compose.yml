@@ -4,7 +4,7 @@ services:
     image: redis:latest
     container_name: redis
     ports:
-      - 6379:6379
+      - "6379:6379"
 
   es:
     build:
@@ -27,8 +27,8 @@ services:
     volumes:
       - es-data:/usr/share/elasticsearch/data
     ports:
-      - 9200:9200 # https
-      - 9300:9300 #tcp
+      - "9200:9200" # https
+      - "9300:9300" #tcp
     networks:
       - es-bridge
 
@@ -39,7 +39,7 @@ services:
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: http://es:9200
     ports:
-      - 5601:5601
+      - "5601:5601"
     depends_on:
       - es
     networks:
