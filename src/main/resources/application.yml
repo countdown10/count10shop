@@ -1,26 +1,9 @@
 spring:
-  profiles:
-    active: dev
   #  레디스
-  data:
-    redis:
-      port: 6379
-      host: localhost
-      connect-timeout: 3000
   application:
     name: count10shop
-  jpa:
-    hibernate:
-      ddl-auto: none
-#      엘라스틱서치
-  elasticsearch:
-    uris: localhost:9200
-#    엘라스틱서치 콘솔창 출력
-logging:
-  level:
-    org:
-      elasticsearch:
-        client: DEBUG
+  profiles:
+    default: dev
 
 management:
   endpoint:

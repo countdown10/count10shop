@@ -3,23 +3,21 @@ package xyz.tomorrowlearncamp.count10shop.domain.payment.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import xyz.tomorrowlearncamp.count10shop.domain.common.annotation.RedissonLock;
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.Item;
-import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;
 import xyz.tomorrowlearncamp.count10shop.domain.item.service.ItemService;
 import xyz.tomorrowlearncamp.count10shop.domain.payment.dto.response.PaymentListResponseDto;
 import xyz.tomorrowlearncamp.count10shop.domain.payment.dto.response.PaymentResponseDto;
 import xyz.tomorrowlearncamp.count10shop.domain.payment.entity.Payment;
 import xyz.tomorrowlearncamp.count10shop.domain.payment.repository.PaymentRepository;
 
-// @Service
 @Slf4j
 @RequiredArgsConstructor
-public class NoLockPaymentService implements PaymentService{
+public class RedissonAOPLockPaymentService implements PaymentService {
 	private final PaymentRepository paymentRepository;
 	private final ItemService itemService;
 
@@ -36,12 +34,15 @@ public class NoLockPaymentService implements PaymentService{
 		return PaymentResponseDto.of(savedPayment);
 	}
 
+	@Override
+	@RedissonLock(key = "item:" + "#itemId") // todo: SpEL 로 itemId 파싱하기
 	@Transactional
 	public PaymentResponseDto purchaseItem(Long itemId, Long issuedCouponId) {
 		Item savedItem = itemService.findItemByIdOrElseThrow(itemId);
 
 		savedItem.checkItemStatus();
 		savedItem.decrementQuantity();
+		log.info("Item Quantity: {}", savedItem.getQuantity());
 
 		Payment payment = Payment.builder()
 			.itemId(savedItem.getId())

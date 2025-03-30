@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import xyz.tomorrowlearncamp.count10shop.domain.common.exception.InvalidRequestException;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemListResponseDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemResponseDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.Item;
@@ -16,11 +15,13 @@ import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Category;
 import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Status;
 import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemElasticRepository;
 import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;
+import xyz.tomorrowlearncamp.count10shop.domain.popular.service.PopularItemService;
 
 @Service
 @RequiredArgsConstructor
 public class ItemService {
 	private final ItemRepository itemRepository;
+	private final PopularItemService popularItemService;
 	private final ItemElasticRepository itemElasticRepository;
 
 	public Page<ItemListResponseDto> findAll(int page, int size, String category) {
@@ -31,10 +32,13 @@ public class ItemService {
 			.map(ItemListResponseDto::of);
 	}
 
+	@Transactional
 	public ItemResponseDto findById(Long id) {
-		Item savedItem = itemRepository.findByIdOrElseThrow(id);
+		Item findItem = itemRepository.findByIdOrElseThrow(id);
 
-		return ItemResponseDto.of(savedItem);
+		popularItemService.updateViews(findItem, 2L);
+
+		return ItemResponseDto.of(findItem);
 	}
 
 	public Item findItemByIdOrElseThrow(Long id) {
