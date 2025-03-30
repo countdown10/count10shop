@@ -13,6 +13,10 @@
         "english" : {
           "type" : "text",
           "analyzer" : "custom_snowball"
+        },
+        "mixed" : {
+          "type" : "text",
+          "analyzer" : "mixed_analyzer"
         }
       }
     },

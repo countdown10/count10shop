@@ -25,18 +25,23 @@ public class ItemSearchService {
 	public ItemDocumentPageResponseDto searchByKeyword(String keyword, int page, int size) {
 		Pageable pageable = PageRequest.of(page - 1, size);
 
-		if (isKorean(keyword)) {
-			List<ItemDocument> itemList = itemElasticRepository.searchByKorean(keyword);
-			return paging(itemList, pageable);
-		}
+		// if (isKorean(keyword)) {
+		// 	List<ItemDocument> itemList = itemElasticRepository.searchByKorean(keyword);
+		// 	System.out.println("한글 검색 중");
+		// 	return paging(itemList, pageable);
+		// }
+		//
+		// System.out.println("영어 검색 중");
+		// List<ItemDocument> itemDocuments = itemElasticRepository.searchByItemNameOrCategory(keyword);
+		// return paging(itemDocuments, pageable);
 
-		List<ItemDocument> itemDocuments = itemElasticRepository.searchByItemNameOrCategory(keyword);
+		List<ItemDocument> itemDocuments = itemElasticRepository.searchByItemNameOrCategoryOrDescription(keyword);
 		return paging(itemDocuments, pageable);
 	}
 
-	private boolean isKorean(String keyword) {
-		return keyword.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"); // 한글이 포함된 경우 true
-	}
+	// private boolean isKorean(String keyword) {
+	// 	return keyword.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"); // 한글이 포함된 경우 true
+	// }
 
 	private ItemDocumentPageResponseDto paging(List<ItemDocument> itemList, Pageable pageable) {
 		int totalElements = itemList.size();  //전부 몇개인지
