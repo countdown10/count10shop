@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.tomorrowlearncamp.count10shop.domain.common.entity.BaseEntity;
+import xyz.tomorrowlearncamp.count10shop.domain.user.enums.UserRole;
 
 @Entity
 @NoArgsConstructor
@@ -32,6 +33,8 @@ public class User extends BaseEntity {
 	@Column
 	private String address;
 
+	private UserRole userRole;
+
 	private boolean deleted = false;
 
 	@Builder
@@ -39,12 +42,14 @@ public class User extends BaseEntity {
 		this.email = email;
 		this.password = password;
 		this.address = address;
+		this.userRole = UserRole.ROLE_USER;
 	}
 
 	@Builder
 	public User(String email, String password) {
 		this.email = email;
 		this.password = password;
+		this.userRole = UserRole.ROLE_USER;
 	}
 
 	public void updateEmail(String email) {

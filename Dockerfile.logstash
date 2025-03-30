@@ -2,21 +2,22 @@ FROM docker.elastic.co/logstash/logstash:8.7.1
 
 RUN mkdir -p /usr/share/logstash/pipeline
 
-RUN echo 'input {' > /usr/share/logstash/pipeline/logstash.conf && \
-    echo '  tcp {' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo '    port => 5044' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo '    codec => json_lines' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo '  }' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo '}' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo '' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo 'output {' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo '  elasticsearch {' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo '    hosts => ["http://elasticsearch:9200"]' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo '    index => "search-log-%{+YYYY.MM.dd}"' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo '  }' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo '' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo '  stdout { codec => rubydebug }' >> /usr/share/logstash/pipeline/logstash.conf && \
-    echo '}' >> /usr/share/logstash/pipeline/logstash.conf
+RUN cat <<EOF > /usr/share/logstash/pipeline/logstash.conf
+input {
+  tcp {
+    port => 5044
+    codec => json_lines
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => ["http://elasticsearch:9200"]
+    index => "search-log-%{+YYYY.MM.dd}"
+  }
+  stdout { codec => rubydebug }
+}
+EOF
 
 EXPOSE 5044
 EXPOSE 9600

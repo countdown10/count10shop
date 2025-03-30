@@ -58,7 +58,7 @@ public class ItemService {
 			.build();
 
 		itemRepository.save(item);
-		// itemElasticRepository.save(ItemDocument.of(item));
+		itemElasticRepository.save(ItemDocument.of(item));
 
 	}
 
