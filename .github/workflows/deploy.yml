@@ -35,7 +35,7 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         run: |
           echo "ECR Registry: $ECR_REGISTRY"
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -f ./Dockerfile.spring -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Deploy
@@ -46,14 +46,15 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: |
-            echo "ECR Registry: ${{ env.ECR_REGISTRY }}"
-            echo "ECR Repository: ${{ env.ECR_REPOSITORY }}"
-            echo "Image Tag: ${{ env.IMAGE_TAG }}"
-            
             docker stop container || true
             docker rm container || true
             docker rmi ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} || true
             
             aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
             docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
-            docker run -d -p 8080:8080 --name container ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+            
+            docker run -d -p 8080:8080 \
+            -e DB_URL=${{ secrets.AWS_RDS_URL }} \
+            -e DB_USER=${{ secrets.AWS_RDS_USER }} \
+            -e DB_USER_PASSWORD=${{ secrets.AWS_RDS_USER_PASSWORD }} \
+            --name container --ulimit nproc=60000 --net count10shop_default ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}

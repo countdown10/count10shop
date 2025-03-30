@@ -3,7 +3,7 @@ spring:
   data:
     redis:
       port: 6379
-      host: localhost
+      host: redis
       connect-timeout: 3000
   application:
     name: count10shop
@@ -12,8 +12,9 @@ spring:
       ddl-auto: none
 #      엘라스틱서치
   elasticsearch:
-    uris: localhost:9200
-  
+    uris: es:9200
+  profiles:
+    default: dev
 
 management:
   endpoint:

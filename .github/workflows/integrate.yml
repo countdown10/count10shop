@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - feat/*
+      - refactoring/*
 
 permissions:
   pull-requests: write
