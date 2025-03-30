@@ -26,6 +26,18 @@ services:
     depends_on:
       - es
 
+  logstash:
+    build:
+      context: ./
+      dockerfile: Dockerfile.logstash
+    container_name: logstash
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "9600:9600"
+      - "5044:5044"
+    depends_on:
+      - es
 #  spring:
 #    build:
 #      context: ./

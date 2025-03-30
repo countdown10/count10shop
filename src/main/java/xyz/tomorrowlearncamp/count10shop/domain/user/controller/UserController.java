@@ -40,7 +40,7 @@ public class UserController {
 	public ResponseEntity<UpdateUserResponseDto> updateMember(
 		@RequestHeader(JwtProperties.HEADER_STRING) String token,
 		@Validated @RequestBody UpdateUserRequestDto dto
-	){
+	) {
 		Long userId = jwtUtil.extractUserId(token);
 		return new ResponseEntity<>(userService.updateUser(dto, userId), HttpStatus.OK);
 	}
@@ -49,7 +49,7 @@ public class UserController {
 	public ResponseEntity<Void> updatePassword(
 		@RequestHeader(JwtProperties.HEADER_STRING) String token,
 		@Validated @RequestBody UpdatePasswordRequestDto dto
-	){
+	) {
 		Long userId = jwtUtil.extractUserId(token);
 		userService.updateUserPassword(dto, userId);
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -59,7 +59,7 @@ public class UserController {
 	public ResponseEntity<Void> deleteMember(
 		@RequestHeader(JwtProperties.HEADER_STRING) String token,
 		@Validated @RequestBody DeleteUserRequestDto dto
-	){
+	) {
 		Long userId = jwtUtil.extractUserId(token);
 		userService.deleteUser(dto, userId);
 		return new ResponseEntity<>(HttpStatus.OK);

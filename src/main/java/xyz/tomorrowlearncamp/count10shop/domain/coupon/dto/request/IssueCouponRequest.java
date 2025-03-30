@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class IssueCouponRequest {
-    private Long userId;
+	private Long userId;
 
-    public static IssueCouponRequest of(Long userId) {
-        IssueCouponRequest issueCouponRequest = new IssueCouponRequest();
-        issueCouponRequest.userId = userId;
-        return issueCouponRequest;
-    }
+	public static IssueCouponRequest of(Long userId) {
+		IssueCouponRequest issueCouponRequest = new IssueCouponRequest();
+		issueCouponRequest.userId = userId;
+		return issueCouponRequest;
+	}
 }

@@ -23,19 +23,15 @@ import xyz.tomorrowlearncamp.count10shop.domain.user.service.UserService;
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
 
-	@Mock
-	private UserService userService;
-
-	@Mock
-	private PasswordEncoder passwordEncoder;
-
-	@InjectMocks
-	private AuthService authService;
-
 	private final String email = "test@example.com";
 	private final String rawPassword = "password123";
 	private final String encodedPassword = "encodedPassword123";
-
+	@Mock
+	private UserService userService;
+	@Mock
+	private PasswordEncoder passwordEncoder;
+	@InjectMocks
+	private AuthService authService;
 	private User user;
 
 	@BeforeEach
@@ -74,7 +70,7 @@ class AuthServiceTest {
 	}
 
 	@Test
-	void  email로_사용자_찾기_비밀번호_일치() {
+	void email로_사용자_찾기_비밀번호_일치() {
 		// given
 		given(userService.findByEmail(email)).willReturn(Optional.of(user));
 		given(passwordEncoder.matches(rawPassword, encodedPassword)).willReturn(true);
@@ -98,7 +94,7 @@ class AuthServiceTest {
 	}
 
 	@Test
-	void  사용자_존재하지만_비밀번호_불일치() {
+	void 사용자_존재하지만_비밀번호_불일치() {
 		// given
 		given(userService.findByEmail(email)).willReturn(Optional.of(user));
 		given(passwordEncoder.matches(rawPassword, encodedPassword)).willReturn(false);

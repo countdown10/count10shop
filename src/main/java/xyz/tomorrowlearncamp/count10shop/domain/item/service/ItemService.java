@@ -46,7 +46,8 @@ public class ItemService {
 	}
 
 	@Transactional
-	public void saveItem(String itemName, String category, String description, Long price, Long quantity, String status) {
+	public void saveItem(String itemName, String category, String description, Long price, Long quantity,
+		String status) {
 		Item item = Item.builder()
 			.itemName(itemName)
 			.category(Category.valueOf(category))
@@ -62,7 +63,8 @@ public class ItemService {
 	}
 
 	@Transactional
-	public void updateItemInfo(Long id, String itemName, String category, String description, Long price, Long quantity) {
+	public void updateItemInfo(Long id, String itemName, String category, String description, Long price,
+		Long quantity) {
 		Item savedItem = itemRepository.findByIdOrElseThrow(id);
 
 		savedItem.updateInfo(itemName, category, description, price, quantity);

@@ -59,5 +59,7 @@ public class User extends BaseEntity {
 		this.address = address;
 	}
 
-	public void delete() {this.deleted = true;}
+	public void delete() {
+		this.deleted = true;
+	}
 }

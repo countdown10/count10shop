@@ -15,7 +15,6 @@ public class AuthUser {
 	private final String email;
 	private final Collection<? extends GrantedAuthority> authorities;
 
-
 	public AuthUser(Long id, String email, UserRole role) {
 		this.id = id;
 		this.email = email;
