@@ -67,7 +67,8 @@ public class JwtUtil {
 
 	public Long extractUserId(String token) {
 		String reToken = token.replace(JwtProperties.TOKEN_PREFIX, "");
-		return Long.parseLong(JWT.require(Algorithm.HMAC256(key.getEncoded())).build().verify(reToken).getClaim("id").toString());
+		return Long.parseLong(
+			JWT.require(Algorithm.HMAC256(key.getEncoded())).build().verify(reToken).getClaim("id").toString());
 	}
 
 	public String substringToken(String tokenValue) {

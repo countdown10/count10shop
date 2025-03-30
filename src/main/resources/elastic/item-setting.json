@@ -1,12 +1,20 @@
 {
   "analysis": {
-      "filter": {
+    "filter": {
       "nori_readingform": {
         "type": "nori_readingform"
       },
       "nori_part_of_speech": {
         "type": "nori_part_of_speech",
-        "stoptags": ["E", "IC", "J", "SP", "SSC", "SSO", "SC"]
+        "stoptags": [
+          "E",
+          "IC",
+          "J",
+          "SP",
+          "SSC",
+          "SSO",
+          "SC"
+        ]
       },
       "word_delimiter": {
         "type": "word_delimiter",
@@ -16,27 +24,36 @@
         "generate_number_parts": true,
         "catenate_all": false
       },
-        "custom_snowball_filter": {
-          "type": "snowball",
-          "language": "English"
-        }
+      "custom_snowball_filter": {
+        "type": "snowball",
+        "language": "English"
+      }
     },
     "analyzer": {
       "korean": {
         "type": "custom",
         "tokenizer": "nori_tokenizer",
-        "filter": ["nori_part_of_speech", "nori_readingform"]
+        "filter": [
+          "nori_part_of_speech",
+          "nori_readingform"
+        ]
       },
       "custom_snowball": {
         "type": "custom",
         "tokenizer": "standard",
-        "filter": ["lowercase", "word_delimiter", "custom_snowball_filter"]
+        "filter": [
+          "lowercase",
+          "word_delimiter",
+          "custom_snowball_filter"
+        ]
       }
     },
     "normalizer": {
       "lowercase_normalizer": {
         "type": "custom",
-        "filter": ["lowercase"]
+        "filter": [
+          "lowercase"
+        ]
       }
     }
   }

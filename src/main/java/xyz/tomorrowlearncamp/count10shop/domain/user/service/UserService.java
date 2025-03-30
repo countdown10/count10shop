@@ -23,7 +23,7 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 
 	public ReadUserResponseDto getUserById(Long id) {
-		User user = userRepository.findById(id).orElseThrow(()->new InvalidRequestException("찾는 유저가 없습니다."));
+		User user = userRepository.findById(id).orElseThrow(() -> new InvalidRequestException("찾는 유저가 없습니다."));
 
 		return ReadUserResponseDto.builder()
 			.id(user.getId())
@@ -35,17 +35,17 @@ public class UserService {
 
 	@Transactional
 	public UpdateUserResponseDto updateUser(UpdateUserRequestDto dto, Long id) {
-		User user = userRepository.findById(id).orElseThrow(()->new InvalidRequestException("찾는 유저가 없습니다."));
+		User user = userRepository.findById(id).orElseThrow(() -> new InvalidRequestException("찾는 유저가 없습니다."));
 
-		if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+		if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
 			throw new InvalidRequestException("Password does not match");
 		}
 
-		if(existsByEmail(dto.getEmail())) {
+		if (existsByEmail(dto.getEmail())) {
 			throw new InvalidRequestException("Email already exists");
 		}
 
-		if(dto.getEmail() != null && !dto.getEmail().isBlank()) {
+		if (dto.getEmail() != null && !dto.getEmail().isBlank()) {
 			user.updateEmail(dto.getEmail());
 		}
 
@@ -59,9 +59,9 @@ public class UserService {
 
 	@Transactional
 	public void updateUserPassword(UpdatePasswordRequestDto dto, Long id) {
-		User user = userRepository.findById(id).orElseThrow(()->new InvalidRequestException("찾는 유저가 없습니다."));
+		User user = userRepository.findById(id).orElseThrow(() -> new InvalidRequestException("찾는 유저가 없습니다."));
 
-		if(!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
+		if (!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
 			throw new InvalidRequestException("password does not match");
 		}
 
@@ -72,9 +72,9 @@ public class UserService {
 
 	@Transactional
 	public void deleteUser(DeleteUserRequestDto dto, Long id) {
-		User user = userRepository.findById(id).orElseThrow(()->new InvalidRequestException("찾는 유저가 없습니다."));
+		User user = userRepository.findById(id).orElseThrow(() -> new InvalidRequestException("찾는 유저가 없습니다."));
 
-		if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+		if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
 			throw new InvalidRequestException("password does not match");
 		}
 
@@ -85,14 +85,19 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public Optional<User> findByEmail(String email) { return userRepository.findByEmail(email); }
+	public Optional<User> findByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
 
-	public Optional<User> findById(Long id) { return userRepository.findById(id); }
+	public Optional<User> findById(Long id) {
+		return userRepository.findById(id);
+	}
 
 	public boolean existsByEmail(String email) {
 		return userRepository.existsByEmail(email);
 	}
 
-	public boolean existsById(Long id) { return userRepository.existsById(id);
+	public boolean existsById(Long id) {
+		return userRepository.existsById(id);
 	}
 }

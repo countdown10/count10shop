@@ -1,14 +1,9 @@
 package xyz.tomorrowlearncamp.count10shop.auth.controller;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +14,6 @@ import xyz.tomorrowlearncamp.count10shop.auth.dto.request.SignUpUserRequestDto;
 import xyz.tomorrowlearncamp.count10shop.auth.dto.response.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.count10shop.auth.dto.response.SignUpUserResponseDto;
 import xyz.tomorrowlearncamp.count10shop.auth.service.AuthService;
-import xyz.tomorrowlearncamp.count10shop.domain.common.dto.AuthUser;
 import xyz.tomorrowlearncamp.count10shop.domain.common.entity.JwtToken;
 import xyz.tomorrowlearncamp.count10shop.domain.common.etc.JwtProperties;
 import xyz.tomorrowlearncamp.count10shop.domain.common.util.JwtUtil;

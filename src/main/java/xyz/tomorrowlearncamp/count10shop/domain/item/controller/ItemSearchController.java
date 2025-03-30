@@ -19,8 +19,8 @@ public class ItemSearchController {
 	@GetMapping("/v1/search")
 	public ResponseEntity<ItemDocumentPageResponseDto> search(
 		@RequestParam String keyword,
-		@RequestParam (defaultValue = "1") int page,
-		@RequestParam (defaultValue = "10") int size
+		@RequestParam(defaultValue = "1") int page,
+		@RequestParam(defaultValue = "10") int size
 	) {
 		return ResponseEntity.ok(itemSearchService.searchByKeyword(keyword, page, size));
 	}

@@ -8,7 +8,6 @@ public class LoginUserResponseDto {
 	private final Long id;
 	private final String email;
 
-
 	@Builder
 	public LoginUserResponseDto(Long id, String email) {
 		this.id = id;
