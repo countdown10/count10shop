@@ -33,10 +33,10 @@ public class ItemService {
 	}
 
 	@Transactional
-	public ItemResponseDto findById(Long id) {
+	public ItemResponseDto findById(Long id, Long userId) {
 		Item findItem = itemRepository.findByIdOrElseThrow(id);
 
-		popularItemService.updateViews(findItem, 2L);
+		popularItemService.updateViews(findItem, userId);
 
 		return ItemResponseDto.of(findItem);
 	}
@@ -58,7 +58,7 @@ public class ItemService {
 			.build();
 
 		itemRepository.save(item);
-		itemElasticRepository.save(ItemDocument.of(item));
+		// itemElasticRepository.save(ItemDocument.of(item));
 
 	}
 
