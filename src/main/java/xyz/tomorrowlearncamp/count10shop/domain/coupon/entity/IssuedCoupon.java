@@ -41,7 +41,8 @@ public class IssuedCoupon extends BaseEntity {
     }
 
     @Builder
-    public IssuedCoupon(Long userId, Coupon coupon, IssuedCouponStatus status, LocalDateTime issuedAt, LocalDateTime usedAt) {
+    public IssuedCoupon(Long id, Long userId, Coupon coupon, IssuedCouponStatus status, LocalDateTime issuedAt, LocalDateTime usedAt) {
+        this.id = id;
         this.userId = userId;
         this.coupon = coupon;
         this.status = status;
