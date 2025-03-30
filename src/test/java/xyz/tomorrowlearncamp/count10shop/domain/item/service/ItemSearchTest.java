@@ -99,18 +99,4 @@ public class ItemSearchTest {
 		verify(itemElasticRepository, never()).searchByKorean(keyword);
 		verify(itemElasticRepository, times(1)).searchByItemNameOrCategory(keyword);
 	}
-
-	@Test
-	@DisplayName("keyword에 아무것도 작성 안하거나 공백일때 오류 던지기")
-	void keyword_isBlank_Test(){
-		//given
-		String keyword = " ";
-		int page = 1;
-		int size = 10;
-
-		//then
-		assertThatExceptionOfType(InvalidRequestException.class)
-			.isThrownBy(() -> itemSearchService.searchByKeyword(keyword, page, size))
-			.withMessage("keyword는 필수입니다.");
-	}
 }

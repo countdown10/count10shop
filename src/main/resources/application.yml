@@ -15,7 +15,12 @@ spring:
 #      엘라스틱서치
   elasticsearch:
     uris: localhost:9200
-  
+#    엘라스틱서치 콘솔창 출력
+logging:
+  level:
+    org:
+      elasticsearch:
+        client: DEBUG
 
 management:
   endpoint:
