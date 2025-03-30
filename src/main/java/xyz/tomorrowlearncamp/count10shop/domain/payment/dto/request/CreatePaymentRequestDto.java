@@ -1,6 +1,7 @@
 package xyz.tomorrowlearncamp.count10shop.domain.payment.dto.request;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -8,8 +9,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CreatePaymentRequestDto {
 	@Min(1)
+	private final Long userId;
+
+	@NotBlank
+	private final String password;
+
+	@Min(1)
 	private final Long itemId;
 
-	// todo: coupon 도메인 완료시 추가
-	private String coupon;
+	private final Long issuedCouponId;
 }
