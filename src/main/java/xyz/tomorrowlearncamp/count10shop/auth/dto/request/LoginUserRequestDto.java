@@ -12,7 +12,7 @@ import xyz.tomorrowlearncamp.count10shop.domain.common.etc.Const;
 @RequiredArgsConstructor
 public class LoginUserRequestDto {
 	@NotNull
-	@Email
+	@Pattern(regexp = Const.EMAIL_REGEX)
 	private final String email;
 
 	@NotNull

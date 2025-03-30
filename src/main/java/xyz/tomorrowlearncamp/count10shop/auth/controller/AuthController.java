@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import xyz.tomorrowlearncamp.count10shop.auth.dto.request.LoginUserRequestDto;
 import xyz.tomorrowlearncamp.count10shop.auth.dto.request.SignUpUserRequestDto;
@@ -32,7 +33,7 @@ public class AuthController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<SignUpUserResponseDto> signUp(
-		@Validated @RequestBody SignUpUserRequestDto requestDto
+		@Valid @RequestBody SignUpUserRequestDto requestDto
 	) {
 		SignUpUserResponseDto responseDto = authService.signUp(requestDto.getEmail(), requestDto.getPassword());
 		return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
@@ -40,7 +41,7 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public ResponseEntity<LoginUserResponseDto> login(
-		@Validated @RequestBody LoginUserRequestDto requestDto
+		@Valid @RequestBody LoginUserRequestDto requestDto
 	) {
 		LoginUserResponseDto responseDto = authService.login(requestDto.getEmail(), requestDto.getPassword());
 		JwtToken jwtToken = jwtUtil.generateToken(responseDto.getId(), responseDto.getEmail());
@@ -48,16 +49,5 @@ public class AuthController {
 		return ResponseEntity.ok()
 			.header(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getAccessToken())
 			.body(responseDto);
-	}
-
-	@PostMapping("/logout")
-	public ResponseEntity<String> logout(
-		@AuthenticationPrincipal AuthUser authUser
-	) {
-		JwtToken jwtToken = jwtUtil.generateExpiredToken(authUser.getId(), authUser.getEmail());
-
-		return ResponseEntity.ok()
-			.header(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getAccessToken())
-			.body("로그아웃 성공");
 	}
 }

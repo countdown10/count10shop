@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import xyz.tomorrowlearncamp.count10shop.domain.common.exception.InvalidRequestException;
-import xyz.tomorrowlearncamp.count10shop.domain.common.exception.NotFoundUserException;
 import xyz.tomorrowlearncamp.count10shop.domain.user.dto.request.DeleteUserRequestDto;
 import xyz.tomorrowlearncamp.count10shop.domain.user.dto.request.UpdatePasswordRequestDto;
 import xyz.tomorrowlearncamp.count10shop.domain.user.dto.request.UpdateUserRequestDto;
@@ -24,7 +23,7 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 
 	public ReadUserResponseDto getUserById(Long id) {
-		User user = userRepository.findById(id).orElseThrow(NotFoundUserException::new);
+		User user = userRepository.findById(id).orElseThrow(()->new InvalidRequestException("찾는 유저가 없습니다."));
 
 		return ReadUserResponseDto.builder()
 			.id(user.getId())
@@ -36,7 +35,7 @@ public class UserService {
 
 	@Transactional
 	public UpdateUserResponseDto updateUser(UpdateUserRequestDto dto, Long id) {
-		User user = userRepository.findById(id).orElseThrow(NotFoundUserException::new);
+		User user = userRepository.findById(id).orElseThrow(()->new InvalidRequestException("찾는 유저가 없습니다."));
 
 		if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
 			throw new InvalidRequestException("Password does not match");
@@ -60,7 +59,7 @@ public class UserService {
 
 	@Transactional
 	public void updateUserPassword(UpdatePasswordRequestDto dto, Long id) {
-		User user = userRepository.findById(id).orElseThrow(NotFoundUserException::new);
+		User user = userRepository.findById(id).orElseThrow(()->new InvalidRequestException("찾는 유저가 없습니다."));
 
 		if(!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
 			throw new InvalidRequestException("password does not match");
@@ -73,7 +72,7 @@ public class UserService {
 
 	@Transactional
 	public void deleteUser(DeleteUserRequestDto dto, Long id) {
-		User user = userRepository.findById(id).orElseThrow(NotFoundUserException::new);
+		User user = userRepository.findById(id).orElseThrow(()->new InvalidRequestException("찾는 유저가 없습니다."));
 
 		if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
 			throw new InvalidRequestException("password does not match");

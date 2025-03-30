@@ -12,8 +12,7 @@ import xyz.tomorrowlearncamp.count10shop.domain.common.etc.Const;
 @RequiredArgsConstructor
 public class SignUpUserRequestDto {
 	@NotNull
-	@Email
-	@Size(min = 8, max = 100)
+	@Pattern(regexp = Const.EMAIL_REGEX)
 	private final String email;
 
 	@NotNull

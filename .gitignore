@@ -37,6 +37,15 @@ out/
 .vscode/
 
 ### properties ###
-*.properties
-application.yml
+**/*.properties
+
+### application ###
+application-local.yml
+.env
 *.env
+
+### log ###
+
+logs/
+
+/src/main/resources/logback-spring.xml

@@ -1,7 +1,7 @@
 package xyz.tomorrowlearncamp.count10shop.auth.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 
 import java.util.Optional;
 
@@ -50,9 +50,9 @@ class AuthServiceTest {
 	@Test
 	void 회원가입성공() {
 		// given
-		when(userService.existsByEmail(email)).thenReturn(false);
-		when(passwordEncoder.encode(rawPassword)).thenReturn(encodedPassword);
-		when(userService.saveUser(any(User.class))).thenReturn(user);
+		given(userService.existsByEmail(email)).willReturn(false);
+		given(passwordEncoder.encode(rawPassword)).willReturn(encodedPassword);
+		given(userService.saveUser(any(User.class))).willReturn(user);
 
 		// when
 		SignUpUserResponseDto response = authService.signUp(email, rawPassword);
@@ -67,7 +67,7 @@ class AuthServiceTest {
 	@Test
 	void 회원가입실패_email이_이미_존재함() {
 		// given
-		when(userService.existsByEmail(email)).thenReturn(true);
+		given(userService.existsByEmail(email)).willReturn(true);
 
 		// when & then
 		assertThrows(InvalidRequestException.class, () -> authService.signUp(email, rawPassword));
@@ -76,8 +76,8 @@ class AuthServiceTest {
 	@Test
 	void  email로_사용자_찾기_비밀번호_일치() {
 		// given
-		when(userService.findByEmail(email)).thenReturn(Optional.of(user));
-		when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(true);
+		given(userService.findByEmail(email)).willReturn(Optional.of(user));
+		given(passwordEncoder.matches(rawPassword, encodedPassword)).willReturn(true);
 
 		// when
 		LoginUserResponseDto response = authService.login(email, rawPassword);
@@ -91,7 +91,7 @@ class AuthServiceTest {
 	@Test
 	void 사용자가_존재하지_않음() {
 		// given
-		when(userService.findByEmail(email)).thenReturn(Optional.empty());
+		given(userService.findByEmail(email)).willReturn(Optional.empty());
 
 		// when & then
 		assertThrows(InvalidRequestException.class, () -> authService.login(email, rawPassword));
@@ -100,8 +100,8 @@ class AuthServiceTest {
 	@Test
 	void  사용자_존재하지만_비밀번호_불일치() {
 		// given
-		when(userService.findByEmail(email)).thenReturn(Optional.of(user));
-		when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(false);
+		given(userService.findByEmail(email)).willReturn(Optional.of(user));
+		given(passwordEncoder.matches(rawPassword, encodedPassword)).willReturn(false);
 
 		// when & then
 		assertThrows(InvalidRequestException.class, () -> authService.login(email, rawPassword));

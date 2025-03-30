@@ -20,6 +20,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import xyz.tomorrowlearncamp.count10shop.domain.common.dto.AuthUser;
+import xyz.tomorrowlearncamp.count10shop.domain.common.etc.JwtProperties;
 import xyz.tomorrowlearncamp.count10shop.domain.common.util.JwtUtil;
 import xyz.tomorrowlearncamp.count10shop.domain.user.enums.UserRole;
 
@@ -38,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	) throws ServletException, IOException {
 		String authorizationHeader = httpRequest.getHeader("Authorization");
 
-		if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+		if (authorizationHeader != null && authorizationHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
 			String jwt = jwtUtil.substringToken(authorizationHeader);
 			try {
 				Claims claims = jwtUtil.extractClaims(jwt);
