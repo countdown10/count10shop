@@ -1,7 +1,6 @@
 package xyz.tomorrowlearncamp.count10shop.auth.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +12,6 @@ import xyz.tomorrowlearncamp.count10shop.domain.user.entity.User;
 import xyz.tomorrowlearncamp.count10shop.domain.user.service.UserService;
 
 @Service
-@Repository
 @RequiredArgsConstructor
 public class AuthService {
 	private final UserService userService;

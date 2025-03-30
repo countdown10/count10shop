@@ -3,6 +3,7 @@ package xyz.tomorrowlearncamp.count10shop.auth.controller;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import xyz.tomorrowlearncamp.count10shop.auth.dto.request.SignUpUserRequestDto;
 import xyz.tomorrowlearncamp.count10shop.auth.dto.response.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.count10shop.auth.dto.response.SignUpUserResponseDto;
 import xyz.tomorrowlearncamp.count10shop.auth.service.AuthService;
+import xyz.tomorrowlearncamp.count10shop.domain.common.dto.AuthUser;
 import xyz.tomorrowlearncamp.count10shop.domain.common.entity.JwtToken;
 import xyz.tomorrowlearncamp.count10shop.domain.common.etc.JwtProperties;
 import xyz.tomorrowlearncamp.count10shop.domain.common.util.JwtUtil;
@@ -32,10 +34,7 @@ public class AuthController {
 	public ResponseEntity<SignUpUserResponseDto> signUp(
 		@Validated @RequestBody SignUpUserRequestDto requestDto
 	) {
-		SignUpUserResponseDto responseDto = authService.signUp(
-			requestDto.getEmail(),
-			requestDto.getPassword()
-		);
+		SignUpUserResponseDto responseDto = authService.signUp(requestDto.getEmail(), requestDto.getPassword());
 		return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
 	}
 
@@ -44,25 +43,21 @@ public class AuthController {
 		@Validated @RequestBody LoginUserRequestDto requestDto
 	) {
 		LoginUserResponseDto responseDto = authService.login(requestDto.getEmail(), requestDto.getPassword());
-		JwtToken jwtToken = jwtUtil.generateToken(responseDto.getId(), requestDto.getEmail());
+		JwtToken jwtToken = jwtUtil.generateToken(responseDto.getId(), responseDto.getEmail());
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getAccessToken());
-
-		return new ResponseEntity<>(responseDto, httpHeaders, HttpStatus.OK);
+		return ResponseEntity.ok()
+			.header(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getAccessToken())
+			.body(responseDto);
 	}
 
 	@PostMapping("/logout")
 	public ResponseEntity<String> logout(
-		@RequestHeader(value = JwtProperties.HEADER_STRING) String token
-	){
-		Long id = jwtUtil.extractUserId(token);
-		String email = jwtUtil.extractEmail(token);
-		JwtToken jwtToken = jwtUtil.generateExpiredToken(id, email);
+		@AuthenticationPrincipal AuthUser authUser
+	) {
+		JwtToken jwtToken = jwtUtil.generateExpiredToken(authUser.getId(), authUser.getEmail());
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getAccessToken());
-
-		return new ResponseEntity<>("로그아웃 성공", httpHeaders, HttpStatus.OK);
+		return ResponseEntity.ok()
+			.header(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getAccessToken())
+			.body("로그아웃 성공");
 	}
 }
