@@ -1,9 +1,9 @@
 spring:
+  #  레디스
   application:
     name: count10shop
-  jpa:
-    hibernate:
-      ddl-auto: none
+  profiles:
+    default: dev
 
 management:
   endpoint:

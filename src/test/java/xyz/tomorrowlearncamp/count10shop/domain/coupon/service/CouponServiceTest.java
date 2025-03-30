@@ -1,5 +1,6 @@
 package xyz.tomorrowlearncamp.count10shop.domain.coupon.service;
 
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.IssuedCoupon;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.IssuedCouponStatus;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.repository.CouponRepository;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.repository.IssuedCouponRepository;
+import xyz.tomorrowlearncamp.count10shop.domain.coupon.service.CouponService;
 
 import java.time.LocalDateTime;
 import java.util.List;

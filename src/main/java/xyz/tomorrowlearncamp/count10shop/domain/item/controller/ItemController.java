@@ -15,12 +15,12 @@ import xyz.tomorrowlearncamp.count10shop.domain.item.service.ItemService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/items")
+@RequestMapping("/api")
 public class ItemController {
 
     private final ItemService itemService;
 
-    @GetMapping
+    @GetMapping("/v1/items")
     public ResponseEntity<Page<ItemListResponseDto>> findAll(
         // todo: page 객체로 입력받기
         @RequestParam(defaultValue = "1") int page,
@@ -30,14 +30,14 @@ public class ItemController {
         return ResponseEntity.ok(itemService.findAll(page, size, category));
     }
 
-    @GetMapping("/{itemId}")
+    @GetMapping("/v1/items/{itemId}")
     public ResponseEntity<ItemResponseDto> findById(
         @PathVariable Long itemId
     ) {
         return ResponseEntity.ok(itemService.findById(itemId));
     }
 
-    @PostMapping
+    @PostMapping("/v1/items")
     public ResponseEntity<Void> saveItem(
         @Valid @RequestBody CreateItemRequestDto dto
     ) {
@@ -45,7 +45,7 @@ public class ItemController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/info/{itemId}")
+    @PatchMapping("/v1/items/info/{itemId}")
     public ResponseEntity<Void> updateItemInfo(
         @PathVariable Long itemId,
         @Valid @RequestBody UpdateItemInfoRequestDto dto
@@ -54,7 +54,7 @@ public class ItemController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/status/{itemId}")
+    @PatchMapping("/v1/items/status/{itemId}")
     public ResponseEntity<Void> updateItemStatus(
         @PathVariable Long itemId,
         @Valid @RequestBody UpdateItemStatusRequestDto dto

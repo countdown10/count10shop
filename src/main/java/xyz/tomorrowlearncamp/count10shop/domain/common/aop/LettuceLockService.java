@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class LettuceLockService implements LockService {
+public class LettuceLockService {
 	private final RedisTemplate<String, String> redisTemplate;
 
 	public boolean lock(String key, String value, Duration timeout) {
