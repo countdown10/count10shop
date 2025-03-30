@@ -20,32 +20,33 @@ import xyz.tomorrowlearncamp.count10shop.domain.user.enums.UserRole;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http
-			.csrf(AbstractHttpConfigurer::disable)
-			.sessionManagement(session -> session
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			)
-			.addFilterBefore(jwtAuthenticationFilter, SecurityContextHolderAwareRequestFilter.class)
-			.formLogin(AbstractHttpConfigurer::disable)
-			.anonymous(AbstractHttpConfigurer::disable)
-			.httpBasic(AbstractHttpConfigurer::disable)
-			.logout(AbstractHttpConfigurer::disable)
-			.rememberMe(AbstractHttpConfigurer::disable)
-			.authorizeHttpRequests(auth -> auth
-				.requestMatchers(request -> request.getRequestURI().startsWith("/auth")).permitAll()
-				.requestMatchers("/test").hasAuthority(UserRole.Authority.ADMIN)
-				.requestMatchers("/open").permitAll()
-				.anyRequest().authenticated()
-			)
-			.build();
-	}
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .addFilterBefore(jwtAuthenticationFilter, SecurityContextHolderAwareRequestFilter.class)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .anonymous(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
+                .rememberMe(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(request -> request.getRequestURI().startsWith("/auth")).permitAll()
+                        .requestMatchers("/test").hasAuthority(UserRole.Authority.ADMIN)
+                        .requestMatchers("/open").permitAll()
+                        .requestMatchers("/api/v1/coupons").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .build();
+    }
 }

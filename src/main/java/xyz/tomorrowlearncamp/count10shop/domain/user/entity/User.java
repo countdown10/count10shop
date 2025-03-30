@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.tomorrowlearncamp.count10shop.domain.common.entity.BaseEntity;
+import xyz.tomorrowlearncamp.count10shop.domain.user.enums.UserRole;
 
 @Entity
 @NoArgsConstructor
@@ -33,6 +34,7 @@ public class User extends BaseEntity {
 	private String address;
 
 	private boolean deleted = false;
+
 
 	@Builder
 	public User(String email, String password, String address) {
