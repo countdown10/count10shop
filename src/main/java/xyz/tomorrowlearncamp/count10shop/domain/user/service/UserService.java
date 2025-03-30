@@ -2,11 +2,11 @@ package xyz.tomorrowlearncamp.count10shop.domain.user.service;
 
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import xyz.tomorrowlearncamp.count10shop.config.PasswordEncoder;
 import xyz.tomorrowlearncamp.count10shop.domain.common.exception.InvalidRequestException;
 import xyz.tomorrowlearncamp.count10shop.domain.common.exception.NotFoundUserException;
 import xyz.tomorrowlearncamp.count10shop.domain.user.dto.request.DeleteUserRequestDto;

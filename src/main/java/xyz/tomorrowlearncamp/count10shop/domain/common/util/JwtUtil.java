@@ -4,16 +4,21 @@ import java.security.Key;
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import xyz.tomorrowlearncamp.count10shop.domain.common.entity.JwtToken;
 import xyz.tomorrowlearncamp.count10shop.domain.common.etc.JwtProperties;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
@@ -31,18 +36,9 @@ public class JwtUtil {
 			.withClaim("email", email)
 			.sign(Algorithm.HMAC256(key.getEncoded()));
 
-		String refreshToken = JWT.create()
-			.withSubject(JwtProperties.APP_TITLE)
-			.withIssuedAt(new Date(now))
-			.withExpiresAt(new Date(now + JwtProperties.REFRESH_EXPIRATION_TIME))
-			.withClaim("id", id)
-			.withClaim("email", email)
-			.sign(Algorithm.HMAC256(key.getEncoded()));
-
 		return JwtToken.builder()
 			.grantType(JwtProperties.TOKEN_PREFIX)
 			.accessToken(accessToken)
-			.refreshToken(refreshToken)
 			.build();
 	}
 
@@ -58,18 +54,9 @@ public class JwtUtil {
 			.withClaim("email", email)
 			.sign(Algorithm.HMAC256(key.getEncoded()));
 
-		String refreshToken = JWT.create()
-			.withSubject(JwtProperties.APP_TITLE)
-			.withIssuedAt(new Date(now))
-			.withExpiresAt(new Date(now))
-			.withClaim("id", id)
-			.withClaim("email", email)
-			.sign(Algorithm.HMAC256(key.getEncoded()));
-
 		return JwtToken.builder()
 			.grantType(JwtProperties.TOKEN_PREFIX)
 			.accessToken(accessToken)
-			.refreshToken(refreshToken)
 			.build();
 	}
 
@@ -81,5 +68,21 @@ public class JwtUtil {
 	public Long extractUserId(String token) {
 		String reToken = token.replace(JwtProperties.TOKEN_PREFIX, "");
 		return Long.parseLong(JWT.require(Algorithm.HMAC256(key.getEncoded())).build().verify(reToken).getClaim("id").toString());
+	}
+
+	public String substringToken(String tokenValue) {
+		if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(JwtProperties.TOKEN_PREFIX)) {
+			return tokenValue.substring(7);
+		}
+		log.error("Not Found Token");
+		throw new NullPointerException("Not Found Token");
+	}
+
+	public Claims extractClaims(String token) {
+		return Jwts.parserBuilder()
+			.setSigningKey(key)
+			.build()
+			.parseClaimsJws(token)
+			.getBody();
 	}
 }

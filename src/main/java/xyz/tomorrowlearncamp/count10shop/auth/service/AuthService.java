@@ -1,5 +1,6 @@
 package xyz.tomorrowlearncamp.count10shop.auth.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import xyz.tomorrowlearncamp.count10shop.auth.dto.response.LoginUserResponseDto;
 import xyz.tomorrowlearncamp.count10shop.auth.dto.response.SignUpUserResponseDto;
-import xyz.tomorrowlearncamp.count10shop.config.PasswordEncoder;
 import xyz.tomorrowlearncamp.count10shop.domain.common.exception.InvalidRequestException;
 import xyz.tomorrowlearncamp.count10shop.domain.user.entity.User;
 import xyz.tomorrowlearncamp.count10shop.domain.user.service.UserService;

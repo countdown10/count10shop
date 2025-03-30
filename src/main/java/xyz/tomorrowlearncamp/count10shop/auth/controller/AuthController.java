@@ -48,30 +48,8 @@ public class AuthController {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getAccessToken());
-		httpHeaders.set(JwtProperties.REFRESH_HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getRefreshToken());
 
 		return new ResponseEntity<>(responseDto, httpHeaders, HttpStatus.OK);
-	}
-
-	@PostMapping("/refresh")
-	public ResponseEntity<String> refresh(
-		@CookieValue(value = JwtProperties.REFRESH_HEADER_STRING, required = false) String refreshToken
-	){
-		if(refreshToken == null || refreshToken.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
-
-		String token = refreshToken.replace(JwtProperties.TOKEN_PREFIX, "");
-		Long id = jwtUtil.extractUserId(token);
-		String email = jwtUtil.extractEmail(token);
-
-		JwtToken jwtToken = jwtUtil.generateToken(id, email);
-
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getAccessToken());
-		httpHeaders.set(JwtProperties.REFRESH_HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getRefreshToken());
-
-		return new ResponseEntity<>("Refresh Token", httpHeaders, HttpStatus.OK);
 	}
 
 	@PostMapping("/logout")
@@ -84,7 +62,6 @@ public class AuthController {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getAccessToken());
-		httpHeaders.set(JwtProperties.REFRESH_HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken.getRefreshToken());
 
 		return new ResponseEntity<>("로그아웃 성공", httpHeaders, HttpStatus.OK);
 	}
