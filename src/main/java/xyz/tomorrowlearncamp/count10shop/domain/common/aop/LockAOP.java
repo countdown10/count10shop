@@ -81,6 +81,7 @@ public class LockAOP {
 			log.info("Lock acquisition finished");
 
 			if (!available) {
+				// Lock 획득 실패시 3번 재시도를 한다.
 				for (int i = 0; i < 3; i++) {
 					boolean locked = fairLock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
 					if (locked)
