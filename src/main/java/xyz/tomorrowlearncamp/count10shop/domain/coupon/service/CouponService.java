@@ -1,13 +1,8 @@
 package xyz.tomorrowlearncamp.count10shop.domain.coupon.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import lombok.RequiredArgsConstructor;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.dto.request.CreateCouponRequest;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.dto.response.CouponResponse;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.dto.response.IssuedCouponResponse;
@@ -17,6 +12,10 @@ import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.IssuedCoupon;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.entity.IssuedCouponStatus;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.repository.CouponRepository;
 import xyz.tomorrowlearncamp.count10shop.domain.coupon.repository.IssuedCouponRepository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,9 +35,6 @@ public class CouponService {
                 .couponStatus(CouponStatus.CREATED)
                 .expiredAt(request.getExpiredAt())
                 .build();
-
-        coupon.activate();
-
         return couponRepository.save(coupon).getId();
     }
 

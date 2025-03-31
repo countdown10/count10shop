@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ItemDocumentPageResponseDto {
+public class ItemDocumentPageResponseDto{
 	private List<ItemDocumentResponseDto> items;
 	private int currentPageNum;
 	private int totalPages;

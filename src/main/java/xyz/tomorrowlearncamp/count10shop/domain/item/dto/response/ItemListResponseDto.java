@@ -1,5 +1,6 @@
 package xyz.tomorrowlearncamp.count10shop.domain.item.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.Item;

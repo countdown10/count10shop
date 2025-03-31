@@ -2,6 +2,7 @@ package xyz.tomorrowlearncamp.count10shop.domain.item.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import xyz.tomorrowlearncamp.count10shop.domain.item.entity.Item;
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.ItemDocument;
 import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Category;
 import xyz.tomorrowlearncamp.count10shop.domain.item.enums.Status;

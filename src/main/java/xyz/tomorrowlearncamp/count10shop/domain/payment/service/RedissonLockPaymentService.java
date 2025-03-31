@@ -7,9 +7,12 @@ import org.redisson.api.RedissonClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import xyz.tomorrowlearncamp.count10shop.domain.common.annotation.RedissonLock;
 import xyz.tomorrowlearncamp.count10shop.domain.common.exception.InvalidRequestException;
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.Item;
 import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;

@@ -20,8 +20,8 @@ import xyz.tomorrowlearncamp.count10shop.domain.item.entity.Item;
 @EnableSchedulerLock(defaultLockAtMostFor = "PT10M")
 public class PopularItemService {
 
-	private static final String RANK = "ranking";
 	private final RedisTemplate<String, String> redisTemplate;
+	private static final String RANK = "ranking";
 
 	public void updateViews(Item item, Long userId) {
 		String item_index = RANK + "_" + item.getItemName() + "_" + item.getId();
@@ -29,7 +29,7 @@ public class PopularItemService {
 
 		// 이미 조회수를 올린 유저
 		Boolean isViewer = redisTemplate.opsForSet().isMember(item_index, userKey);
-		if (Boolean.TRUE.equals(isViewer)) {
+		if(Boolean.TRUE.equals(isViewer)) {
 			return;
 		}
 
@@ -60,9 +60,9 @@ public class PopularItemService {
 	public void resetViewCounts() {
 		redisTemplate.delete(RANK); // ZSet 삭제하여 초기화
 
-		Set<String> userKeys = redisTemplate.keys(RANK + "*");
+		Set<String> userKeys = redisTemplate.keys(RANK+"*");
 		if (!userKeys.isEmpty()) {
-			for (String str : userKeys) {
+			for ( String str : userKeys) {
 				redisTemplate.delete(str); // 유저 조회 기록 삭제
 			}
 		}

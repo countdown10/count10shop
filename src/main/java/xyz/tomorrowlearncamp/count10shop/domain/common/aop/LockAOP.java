@@ -34,10 +34,10 @@ public class LockAOP {
 		long end = start + 5000L;
 
 		/*
-		 * SpinLock 방식
-		 * 특정 시간동안 루프를 돌면서 Lock 획득을 시도한다.
-		 * 특정 시간 이후에도 획득하지 못하면 예외를 던진다.
-		 * */
+		* SpinLock 방식
+		* 특정 시간동안 루프를 돌면서 Lock 획득을 시도한다.
+		* 특정 시간 이후에도 획득하지 못하면 예외를 던진다.
+		* */
 		while (System.currentTimeMillis() < end) {
 			if (lockService.lock(key, value, timeout)) {
 				try {
@@ -47,11 +47,11 @@ public class LockAOP {
 				}
 			}
 			/*
-			 * Thread sleep 없이 루프를 돌 경우 1초당 매우 많은 Lock 획득을 시도한다.
-			 * 그렇기 때문에 적절한 시간을 파라미터로 넣어서 스래드를 sleep 시킨다.
-			 * --- 주의사항 ---
-			 * 파라미터 값이 너무 짧다면 Context-Switching 으로 인한 비용이 더 커진다.
-			 * */
+			* Thread sleep 없이 루프를 돌 경우 1초당 매우 많은 Lock 획득을 시도한다.
+			* 그렇기 때문에 적절한 시간을 파라미터로 넣어서 스래드를 sleep 시킨다.
+			* --- 주의사항 ---
+			* 파라미터 값이 너무 짧다면 Context-Switching 으로 인한 비용이 더 커진다.
+			* */
 			Thread.sleep(200L);
 		}
 
@@ -59,8 +59,7 @@ public class LockAOP {
 	}
 
 	@Around("@annotation(redissonLock)")
-	public Object redissonLockAroundPurchase(ProceedingJoinPoint joinPoint, RedissonLock redissonLock) throws
-		Throwable {
+	public Object redissonLockAroundPurchase(ProceedingJoinPoint joinPoint, RedissonLock redissonLock) throws Throwable {
 		log.info("AOP Start");
 		String key = redissonLock.key();
 		long waitTime = redissonLock.waitTime();
@@ -72,12 +71,12 @@ public class LockAOP {
 		try {
 			log.info("Lock acquisition started");
 			/*
-			 * Lock 획득 여부를 return value 로 준다. 실패시 false 반환.
-			 * --- 파라미터 ---
-			 * 1. Lock 획득 시도 시간
-			 * 2. Lock 획득 후 유지 시간 (획득 후 네트워크 에러 등으로 Lock 을 반환하지 않아도 유지 시간이 지나면 자동으로 반환한다. 데드락 방지)
-			 * 3. 1번과 2번 파라미터 값의 시간 단위
-			 * */
+			* Lock 획득 여부를 return value 로 준다. 실패시 false 반환.
+			* --- 파라미터 ---
+			* 1. Lock 획득 시도 시간
+			* 2. Lock 획득 후 유지 시간 (획득 후 네트워크 에러 등으로 Lock 을 반환하지 않아도 유지 시간이 지나면 자동으로 반환한다. 데드락 방지)
+			* 3. 1번과 2번 파라미터 값의 시간 단위
+			* */
 			boolean available = fairLock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
 			log.info("Lock acquisition finished");
 

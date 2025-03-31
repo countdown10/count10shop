@@ -39,10 +39,8 @@ class ItemServiceTest {
 		ReflectionTestUtils.setField(item1, "id", 1L);
 		ReflectionTestUtils.setField(item2, "id", 2L);
 
-		ItemListResponseDto dto1 = new ItemListResponseDto(item1.getId(), item1.getItemName(), item1.getCategory(),
-			item1.getPrice());
-		ItemListResponseDto dto2 = new ItemListResponseDto(item2.getId(), item2.getItemName(), item2.getCategory(),
-			item2.getPrice());
+		ItemListResponseDto dto1 = new ItemListResponseDto(item1.getId(), item1.getItemName(), item1.getCategory(), item1.getPrice());
+		ItemListResponseDto dto2 = new ItemListResponseDto(item2.getId(), item2.getItemName(), item2.getCategory(), item2.getPrice());
 
 		Pageable pageable = PageRequest.of(0, 10);
 
@@ -71,10 +69,8 @@ class ItemServiceTest {
 		ReflectionTestUtils.setField(item1, "id", 1L);
 		ReflectionTestUtils.setField(item2, "id", 2L);
 
-		ItemListResponseDto dto1 = new ItemListResponseDto(item1.getId(), item1.getItemName(), item1.getCategory(),
-			item1.getPrice());
-		ItemListResponseDto dto2 = new ItemListResponseDto(item2.getId(), item2.getItemName(), item2.getCategory(),
-			item2.getPrice());
+		ItemListResponseDto dto1 = new ItemListResponseDto(item1.getId(), item1.getItemName(), item1.getCategory(), item1.getPrice());
+		ItemListResponseDto dto2 = new ItemListResponseDto(item2.getId(), item2.getItemName(), item2.getCategory(), item2.getPrice());
 
 		Pageable pageable = PageRequest.of(0, 10);
 
@@ -99,6 +95,8 @@ class ItemServiceTest {
 		// when
 		Page<ItemListResponseDto> result1 = itemService.findAll(1, 10, "BEAUTY");
 		Page<ItemListResponseDto> result2 = itemService.findAll(1, 10, "CLOTHES");
+
+
 
 		// then
 		// result 1
