@@ -1,5 +1,6 @@
 package xyz.tomorrowlearncamp.count10shop.domain.item.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -32,4 +33,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 	default Item findByIdWithPessimisticLockOrEseThrow(Long id) {
 		return findByIdWithPessimisticLock(id).orElseThrow(() -> new InvalidRequestException("상품을 찾을 수 없습니다."));
 	}
+
+	@Query("SELECT i FROM Item i " +
+		"WHERE LOWER(i.itemName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+		"OR LOWER(i.category) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+		"OR LOWER(i.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+	List<Item> searchByItemNameOrCategoryOrDescription(@Param("keyword") String keyword);
 }

@@ -1,3 +1,4 @@
+
 services:
   redis:
     image: redis:latest
@@ -10,6 +11,14 @@ services:
       context: ./
       dockerfile: Dockerfile.elasticsearch
     container_name: es
+    environment:
+      - discovery.type=single-node
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
     volumes:
       - es-data:/usr/share/elasticsearch/data
     ports:

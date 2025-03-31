@@ -5,20 +5,24 @@
     },
     "itemName": {
       "type": "text",
-      "fields": {
-        "korean": {
-          "type": "text",
+      "fields" : {
+        "korean" : {
+          "type" : "text",
           "analyzer": "korean"
         },
-        "english": {
-          "type": "text",
-          "analyzer": "custom_snowball"
+        "english" : {
+          "type" : "text",
+          "analyzer" : "custom_snowball"
+        },
+        "mixed" : {
+          "type" : "text",
+          "analyzer" : "mixed_analyzer"
         }
       }
     },
     "category": {
       "type": "keyword",
-      "normalizer": "lowercase_normalizer"
+      "normalizer" : "lowercase_normalizer"
     },
     "description": {
       "type": "text",
@@ -31,8 +35,8 @@
       "type": "long"
     },
     "status": {
-      "type": "keyword",
-      "normalizer": "lowercase_normalizer"
+      "type" : "keyword",
+      "normalizer" : "lowercase_normalizer"
     }
   }
 }
