@@ -2,6 +2,7 @@ package xyz.tomorrowlearncamp.count10shop.domain.item.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import xyz.tomorrowlearncamp.count10shop.domain.common.dto.AuthUser;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.request.CreateItemRequestDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.request.UpdateItemInfoRequestDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.request.UpdateItemStatusRequestDto;
@@ -39,9 +41,10 @@ public class ItemController {
 
 	@GetMapping("/v1/items/{itemId}")
 	public ResponseEntity<ItemResponseDto> findById(
+		@AuthenticationPrincipal AuthUser authUser,
 		@PathVariable Long itemId
 	) {
-		return ResponseEntity.ok(itemService.findById(itemId));
+		return ResponseEntity.ok(itemService.findById(itemId, authUser.getId()));
 	}
 
 	@PostMapping("/v1/items")
