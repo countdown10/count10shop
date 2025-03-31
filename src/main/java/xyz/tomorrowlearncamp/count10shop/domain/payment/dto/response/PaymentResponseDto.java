@@ -13,6 +13,7 @@ public class PaymentResponseDto {
 	private final Long totalPrice;
 
 	public static PaymentResponseDto of(Payment payment) {
-		return new PaymentResponseDto(payment.getId(), payment.getItemId(), payment.getItemName(), payment.getTotalPrice());
+		return new PaymentResponseDto(payment.getId(), payment.getItemId(), payment.getItemName(),
+			payment.getTotalPrice());
 	}
 }
