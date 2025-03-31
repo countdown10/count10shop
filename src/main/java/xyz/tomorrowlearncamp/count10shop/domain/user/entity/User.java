@@ -33,6 +33,8 @@ public class User extends BaseEntity {
 	@Column
 	private String address;
 
+	private UserRole userRole;
+
 	private boolean deleted = false;
 
 
@@ -41,12 +43,14 @@ public class User extends BaseEntity {
 		this.email = email;
 		this.password = password;
 		this.address = address;
+		this.userRole = UserRole.ROLE_USER;
 	}
 
 	@Builder
 	public User(String email, String password) {
 		this.email = email;
 		this.password = password;
+		this.userRole = UserRole.ROLE_USER;
 	}
 
 	public void updateEmail(String email) {
@@ -61,5 +65,7 @@ public class User extends BaseEntity {
 		this.address = address;
 	}
 
-	public void delete() {this.deleted = true;}
+	public void delete() {
+		this.deleted = true;
+	}
 }

@@ -44,10 +44,10 @@ public class ItemSearchService {
 
 	private ItemDocumentPageResponseDto paging(List<ItemDocument> itemList, Pageable pageable) {
 		int totalElements = itemList.size();  //전부 몇개인지
-		int start = (int) pageable.getOffset(); //시작 번호
+		int start = (int)pageable.getOffset(); //시작 번호
 		int end = Math.min((start + pageable.getPageSize()), totalElements);    //끝 번호
 		List<ItemDocument> pageContent = itemList.subList(start, end); //itemList 에서 start 인덱스부터 end 인덱스까지의 부분 리스트를 반환.
-		PageImpl<ItemDocument> itemPage = new PageImpl<>(pageContent, pageable, totalElements);	//페이징 처리
+		PageImpl<ItemDocument> itemPage = new PageImpl<>(pageContent, pageable, totalElements);    //페이징 처리
 		int currentPage = itemPage.getNumber() + 1;    //현재 페이지번호
 		int totalPages = itemPage.getTotalPages();     //총 페이지 번호
 

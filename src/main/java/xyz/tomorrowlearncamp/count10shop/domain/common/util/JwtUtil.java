@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import xyz.tomorrowlearncamp.count10shop.domain.common.entity.JwtToken;
 import xyz.tomorrowlearncamp.count10shop.domain.common.etc.JwtProperties;
+import xyz.tomorrowlearncamp.count10shop.domain.user.enums.UserRole;
 
 @Slf4j
 @Component
@@ -25,7 +26,7 @@ public class JwtUtil {
 	private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
 	// 토큰 생성
-	public JwtToken generateToken(Long id, String email) {
+	public JwtToken generateToken(Long id, String email, UserRole userRole) {
 		long now = System.currentTimeMillis();
 
 		String accessToken = JWT.create()
@@ -34,6 +35,7 @@ public class JwtUtil {
 			.withExpiresAt(new Date(now + JwtProperties.ACCESS_EXPIRATION_TIME))
 			.withClaim("id", id)
 			.withClaim("email", email)
+			.withClaim("userRole", userRole.name())
 			.sign(Algorithm.HMAC256(key.getEncoded()));
 
 		return JwtToken.builder()
@@ -67,7 +69,8 @@ public class JwtUtil {
 
 	public Long extractUserId(String token) {
 		String reToken = token.replace(JwtProperties.TOKEN_PREFIX, "");
-		return Long.parseLong(JWT.require(Algorithm.HMAC256(key.getEncoded())).build().verify(reToken).getClaim("id").toString());
+		return Long.parseLong(
+			JWT.require(Algorithm.HMAC256(key.getEncoded())).build().verify(reToken).getClaim("id").toString());
 	}
 
 	public String substringToken(String tokenValue) {

@@ -1,13 +1,22 @@
 package xyz.tomorrowlearncamp.count10shop.domain.coupon.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.tomorrowlearncamp.count10shop.domain.common.entity.BaseEntity;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -49,4 +58,5 @@ public class IssuedCoupon extends BaseEntity {
         this.issuedAt = issuedAt;
         this.usedAt = usedAt;
     }
+
 }

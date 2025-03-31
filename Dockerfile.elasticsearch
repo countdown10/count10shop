@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:8.7.1
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.7.1 AS builder
 
 CMD bin/elasticsearch-plugin install analysis-nori
 

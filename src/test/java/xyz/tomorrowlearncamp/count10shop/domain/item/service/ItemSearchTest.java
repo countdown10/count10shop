@@ -102,7 +102,7 @@ public class ItemSearchTest {
 
 	@Test
 	@DisplayName("keyword에 아무것도 작성 안하거나 공백일때 오류 던지기")
-	void keyword_isBlank_Test(){
+	void keyword_isBlank_Test() {
 		//given
 		String keyword = " ";
 		int page = 1;

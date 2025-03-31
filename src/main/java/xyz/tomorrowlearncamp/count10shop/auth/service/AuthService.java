@@ -19,7 +19,7 @@ public class AuthService {
 
 	@Transactional
 	public SignUpUserResponseDto signUp(String email, String password) {
-		if(userService.existsByEmail(email)){
+		if (userService.existsByEmail(email)) {
 			throw new InvalidRequestException("Email already exists");
 		}
 
@@ -41,15 +41,17 @@ public class AuthService {
 
 	@Transactional(readOnly = true)
 	public LoginUserResponseDto login(String email, String password) {
-		User user = userService.findByEmail(email).orElseThrow(() -> new InvalidRequestException("Invalid email address"));
+		User user = userService.findByEmail(email)
+			.orElseThrow(() -> new InvalidRequestException("Invalid email address"));
 
-		if(!passwordEncoder.matches(password, user.getPassword())){
+		if (!passwordEncoder.matches(password, user.getPassword())) {
 			throw new InvalidRequestException("Incorrect Password");
 		}
 
 		return LoginUserResponseDto.builder()
 			.id(user.getId())
 			.email(user.getEmail())
+			.userRole(user.getUserRole())
 			.build();
 	}
 }
