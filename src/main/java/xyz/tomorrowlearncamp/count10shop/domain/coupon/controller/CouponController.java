@@ -26,13 +26,14 @@ import xyz.tomorrowlearncamp.count10shop.domain.coupon.service.CouponService;
 public class CouponController {
 	private final CouponService couponService;
 
-	// 쿠폰 생성
-	@PostMapping("/v1/coupons")
-	public ResponseEntity<Long> createCoupon(@RequestBody @Valid CreateCouponRequest createCouponRequest) {
-		// TODO: ADMIN 권한 체크 필요
-		Long id = couponService.createCoupon(createCouponRequest);
-		return ResponseEntity.status(HttpStatus.CREATED).body(id);
-	}
+
+  // 쿠폰 생성
+  @PostMapping("/v1/coupons")
+  public ResponseEntity<Long> crateCoupon(@RequestBody @Valid CreateCouponRequest createCouponRequest) {
+    // TODO: ADMIN 권한 체크 필요
+    Long id = couponService.createCoupon(createCouponRequest);
+    return ResponseEntity.status(HttpStatus.CREATED).body(id);
+  }
 
 	// 전체 쿠폰 조회
 	@GetMapping("/v1/coupons")

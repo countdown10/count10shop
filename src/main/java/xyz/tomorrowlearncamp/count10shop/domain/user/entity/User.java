@@ -37,6 +37,7 @@ public class User extends BaseEntity {
 
 	private boolean deleted = false;
 
+
 	@Builder
 	public User(String email, String password, String address) {
 		this.email = email;
