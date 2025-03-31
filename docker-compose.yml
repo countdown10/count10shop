@@ -24,8 +24,6 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
-    networks:
-      - es-bridge
 
   kibana:
     build:
@@ -37,13 +35,7 @@ services:
     depends_on:
       es:
         condition: service_healthy
-    networks:
-      - es-bridge
 
 volumes:
   es-data:
     driver: local
-
-networks:
-  es-bridge:
-    driver: bridge
