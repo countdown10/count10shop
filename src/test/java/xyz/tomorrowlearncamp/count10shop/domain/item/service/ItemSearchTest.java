@@ -12,6 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import xyz.tomorrowlearncamp.count10shop.domain.common.exception.InvalidRequestException;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.response.ItemDocumentPageResponseDto;
@@ -112,8 +115,10 @@ public class ItemSearchTest {
 		ItemDocument itemDocument3 = new ItemDocument(3L, keyword, 15000L, Category.CLOTHES, "It is beauty clothes.", Status.SALE, 10L);
 
 		List<ItemDocument> itemDocumentList = List.of(itemDocument, itemDocument2, itemDocument3);
+		Pageable pageable = PageRequest.of(0, 10);
+		PageImpl<ItemDocument> pageImpl = new PageImpl<>(itemDocumentList, pageable, itemDocumentList.size());
 
-		given(itemElasticRepository.searchByItemNameOrCategoryOrDescription(keyword)).willReturn(itemDocumentList);
+		given(itemElasticRepository.searchByItemNameOrCategoryOrDescription(keyword, pageable)).willReturn(pageImpl);
 
 		//when
 		ItemDocumentPageResponseDto result = itemSearchService.searchByKeyword(keyword, 1, 10);
@@ -122,7 +127,7 @@ public class ItemSearchTest {
 		assertEquals(3, result.getTotalElements());
 		assertEquals(1, result.getCurrentPageNum());
 		assertEquals(1, result.getTotalPages());
-		verify(itemElasticRepository, times(1)).searchByItemNameOrCategoryOrDescription(keyword);
+		verify(itemElasticRepository, times(1)).searchByItemNameOrCategoryOrDescription(keyword, pageable);
 
 	}
 }
