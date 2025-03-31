@@ -8,7 +8,10 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import xyz.tomorrowlearncamp.count10shop.domain.common.dto.AuthUser;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.request.CreateItemRequestDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.request.UpdateItemInfoRequestDto;
 import xyz.tomorrowlearncamp.count10shop.domain.item.dto.request.UpdateItemStatusRequestDto;
@@ -53,9 +56,10 @@ public class ItemController {
 
     @GetMapping("/v1/items/{itemId}")
     public ResponseEntity<ItemResponseDto> findById(
-        @PathVariable Long itemId
+        @PathVariable Long itemId,
+        @AuthenticationPrincipal AuthUser authUser
     ) {
-        return ResponseEntity.ok(itemService.findById(itemId));
+        return ResponseEntity.ok(itemService.findById(itemId, authUser.getId()));
     }
 
     @PostMapping("/v1/items")
