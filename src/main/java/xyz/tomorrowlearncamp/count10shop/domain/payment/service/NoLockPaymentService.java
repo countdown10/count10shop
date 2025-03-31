@@ -3,13 +3,11 @@ package xyz.tomorrowlearncamp.count10shop.domain.payment.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import xyz.tomorrowlearncamp.count10shop.domain.item.entity.Item;
-import xyz.tomorrowlearncamp.count10shop.domain.item.repository.ItemRepository;
 import xyz.tomorrowlearncamp.count10shop.domain.item.service.ItemService;
 import xyz.tomorrowlearncamp.count10shop.domain.payment.dto.response.PaymentListResponseDto;
 import xyz.tomorrowlearncamp.count10shop.domain.payment.dto.response.PaymentResponseDto;
@@ -19,7 +17,7 @@ import xyz.tomorrowlearncamp.count10shop.domain.payment.repository.PaymentReposi
 // @Service
 @Slf4j
 @RequiredArgsConstructor
-public class NoLockPaymentService implements PaymentService{
+public class NoLockPaymentService implements PaymentService {
 	private final PaymentRepository paymentRepository;
 	private final ItemService itemService;
 

@@ -14,9 +14,7 @@
         "split_on_numerics": true,
         "generate_word_parts": true,
         "generate_number_parts": true,
-        "catenate_all": false,
-        "catenate_words": false,
-        "preserve_original": false
+        "catenate_all": false
       },
         "custom_snowball_filter": {
           "type": "snowball",
